@@ -1,4 +1,4 @@
-package com.vetor.gera_pedido_ecommerce.model;
+package com.vetor.gera_pedido_ecommerce.model.pedido;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +15,7 @@ public class PedidoModel {
     private String observacoes;
     private Float total_produtos;
     private Float total_frete;
+    private Float total_seguro;
     private Float total_desconto;
     private Float total_outro;
     private Integer qtd_produtos;
@@ -53,5 +54,7 @@ public class PedidoModel {
     private String inf_pagamento;
     private Integer numero_parcelas;
     private String bandeira;
+
+
 
 }
