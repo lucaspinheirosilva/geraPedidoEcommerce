@@ -5,6 +5,8 @@ import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
 import com.vetor.gera_pedido_ecommerce.service.PedidoService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -25,7 +27,7 @@ public class IndexController {
 
     @RequestMapping("/produto")
     @GetMapping
-    public List<ProdutoModel> produto(){
+    public ProdutoModel produto() throws URISyntaxException, IOException {
         return service.listaProdutos();
     }
 
