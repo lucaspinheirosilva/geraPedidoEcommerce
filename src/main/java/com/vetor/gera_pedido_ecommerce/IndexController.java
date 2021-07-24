@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class IndexController {
@@ -27,7 +28,7 @@ public class IndexController {
 
     @RequestMapping("/produto")
     @GetMapping
-    public ProdutoModel produto() throws URISyntaxException, IOException {
+    public List<ProdutoModel> produto() throws URISyntaxException, IOException {
         return service.listaProdutos();
     }
 
