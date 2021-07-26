@@ -1,8 +1,5 @@
 package com.vetor.gera_pedido_ecommerce.service;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.vetor.gera_pedido_ecommerce.model.pedido.Pedido;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
 import lombok.extern.java.Log;
@@ -11,6 +8,8 @@ import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,12 +25,12 @@ public class PedidoService {
     final String tokenAcesso = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMVUNBLTU0MzkiLCJleHAiOjE5NDIxNjI0MzUsInJvbCI6WyJST0xFX1VTRVIiXX0.fdtnDViKiT1xDtxOR0wM0xHzgEfkvtUKkD9Ab7tKSx-saQ-pB5iFFl4lu_j46Yxz81cIEKziJzTsB9s_IsEUog";
 
 
-    public PedidoModel enviar(PedidoModel pedido) {
+    public Pedido enviar(@Valid Pedido pedido) {
         return pedido;
     }
 
 
-    public List<ProdutoModel> listaProdutos() throws URISyntaxException, IOException {
+    public List<ProdutoModel> listaProdutos() throws URISyntaxException {
         List<ProdutoModel> todosProdutos = new ArrayList<ProdutoModel>();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
