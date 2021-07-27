@@ -1,8 +1,7 @@
 package com.vetor.gera_pedido_ecommerce.controller;
 
-import com.vetor.gera_pedido_ecommerce.model.pedido.Pedido;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
-import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
+import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
 import com.vetor.gera_pedido_ecommerce.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 
 @Controller
@@ -37,16 +34,16 @@ public class IndexController {
 
     @GetMapping("/add")
     public String pedidoFormulario(Model model){
-        model.addAttribute("pedido",new Pedido());
+        model.addAttribute("pedido",new PedidoModel());
         return "pedidoFormulario";
     }
 
     @PostMapping("/criarpedido")
-    public String criarPedido(  @Valid Pedido pedido, BindingResult result) {
+    public String criarPedido(@Valid PedidoModel pedidoModel, BindingResult result) {
         if (result.hasErrors()){
             return "pedidoFormulario";
         }
-        service.enviar(pedido);
+        service.enviar(pedidoModel);
         return "redirect:/";
 
         //TODO:parei em 17:39 min

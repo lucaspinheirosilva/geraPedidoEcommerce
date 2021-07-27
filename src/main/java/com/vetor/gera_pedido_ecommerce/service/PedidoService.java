@@ -1,16 +1,13 @@
 package com.vetor.gera_pedido_ecommerce.service;
-import com.vetor.gera_pedido_ecommerce.model.pedido.Pedido;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
+import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
 import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
-import lombok.extern.java.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -18,18 +15,13 @@ import java.util.List;
 
 
 @Service
-@Log
 public class PedidoService {
     final String criarPedidoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/pedido";
     final String listarProdutoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/produtos";
     final String tokenAcesso = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMVUNBLTU0MzkiLCJleHAiOjE5NDIxNjI0MzUsInJvbCI6WyJST0xFX1VTRVIiXX0.fdtnDViKiT1xDtxOR0wM0xHzgEfkvtUKkD9Ab7tKSx-saQ-pB5iFFl4lu_j46Yxz81cIEKziJzTsB9s_IsEUog";
 
 
-    public Pedido enviar(@Valid Pedido pedido) {
-        return pedido;
-    }
-
-
+    //Lista todos os produtos que contem no EndPoint
     public List<ProdutoModel> listaProdutos() throws URISyntaxException {
         List<ProdutoModel> todosProdutos = new ArrayList<ProdutoModel>();
         RestTemplate restTemplate = new RestTemplate();
@@ -44,7 +36,6 @@ public class PedidoService {
         //pega a resposta e transporma em ResponseEntity<String>
         ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
         System.out.println("PASSOU PELO RESPONSE ENTITY---->" + response.getBody());
-
 
 
         //Mapeia o JSON e guarda as informaçoes nas variavies
@@ -121,6 +112,50 @@ public class PedidoService {
 
         //Retorna a Lista de todos os produtos
         return todosProdutos;
+    }
+
+    //envia(faz o POST) do objeto PedidoCliente para o endPoin
+    public PedidoModel enviar(@Valid PedidoModel pedidoModel) {
+        List<PedidoProduto> ListpedidoProduto = new ArrayList();
+        PedidoProduto pedidoProduto = new PedidoProduto();
+
+        JSONObject json = new JSONObject();
+        JSONObject pedidosJSONobject = new JSONObject();
+        JSONArray array = new JSONArray();
+
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("observacoes", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("total_produtos", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("total_frete", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("total_seguro", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("total_desconto", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("total_outro", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("qtd_produtos", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("logradouro", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("numero", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("complemento", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("bairro", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("cidade", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+
+        pedidoProduto.setCod_barras("654654654655");
+        pedidoProduto.setValor(10.99F);
+        pedidoProduto.setFrete(10.99F);
+        pedidoProduto.setSeguro(10.99F);
+        pedidoProduto.setDesconto(10.99F);
+        pedidoProduto.setOutros(10.99F);
+        pedidoProduto.setQuantidade(2);
+
+        ListpedidoProduto.add(pedidoProduto);
+
+
+        return pedidoModel;
     }
 
 

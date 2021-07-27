@@ -1,13 +1,13 @@
 package com.vetor.gera_pedido_ecommerce.model.pedido;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PedidoModel {
 
     //DADOS DO PEDIDO
@@ -30,6 +30,12 @@ public class PedidoModel {
     private Integer prazo_entrega;
     private String origem;
 
+    List<PedidoCliente> clientesList;
+    List<PedidoPamento> pamentosList;
+    List<PedidoProduto> produtoList;
+
+
+    /*
     //DADOS DO CLIENTE
     private String cpf_cnpj;
     private String nome_cliente;
@@ -53,8 +59,30 @@ public class PedidoModel {
     private String status;
     private String inf_pagamento;
     private Integer numero_parcelas;
-    private String bandeira;
+    private String bandeira;*/
 
 
+    public List<PedidoCliente> getClientesList() {
+        return clientesList;
+    }
 
+    public void setClientesList(List<PedidoCliente> clientesList) {
+        this.clientesList = clientesList;
+    }
+
+    public List<PedidoPamento> getPamentosList() {
+        return pamentosList;
+    }
+
+    public void setPamentosList(List<PedidoPamento> pamentosList) {
+        this.pamentosList = pamentosList;
+    }
+
+    public List<PedidoProduto> getProdutoList() {
+        return produtoList;
+    }
+
+    public void setProdutoList(List<PedidoProduto> produtoList) {
+        this.produtoList = produtoList;
+    }
 }

@@ -2,6 +2,7 @@ package com.vetor.gera_pedido_ecommerce.lixo;
 
 public class Anotacoes {
 
+    //PRINT DO OBJETOS PRODUTOS
    /* System.out.println("cod_produto="+cod_produto);
             System.out.println("cod_fornecedor="+cod_fornecedor);
             System.out.println("cod_departamento="+cod_departamento);
@@ -34,6 +35,7 @@ public class Anotacoes {
             System.out.println("---------------------FIM DO PRODUTO NUMERO "+(i+1)+" de "+array.length()+" --------------------");*/
 
 
+    //SETTER DO OBJETO PEDIDO
     /* pedido.setData_pedido("2021-07-19 12:00:00");
         pedido.setObservacoes("");
         pedido.setTotal_produtos(199.20F);
@@ -74,4 +76,70 @@ public class Anotacoes {
         pedido.setValor_pagamento(199.20F);
         pedido.setBandeira("XERECARD");
         pedido.setToken("nao_precisa");*/
+
+
+    //ESTRUTUTO DO post PEDIDO
+   /* {
+        "data_pedido" : "2020-04-01 00:00:00",
+            "observacoes" : "INTEGRACAO DO PEDIDO",
+            "total_produtos" : 100.00,
+            "total_frete" : 0.00,
+            "total_seguro" : 0.00,
+            "total_desconto" : 0.00,
+            "total_outro" : 0.00,
+            "qtd_produtos" : 2.00,
+            "logradouro" : "RUA X",
+            "numero" : "SEM NUMERO",
+            "complemento" : "CASA 1",
+            "bairro" : "CENTRO",
+            "cidade" : "CURITIBA",
+            "estado" : "PR",
+            "cep" : "80300000",
+            "referencia" : "",
+            "prazo_entrega" : 5,
+            "origem" : "MERCADO LIVRE/B2W/AMAZON/ETC...",
+
+            "cliente" : {
+        "cpf_cnpj" : "02964489904",
+                "nome_cliente" : "CLIENTE TESTE",
+                "data_nasc_abe": "2020-04-01 00:00:00",
+                "fisica_juridica" : "F"
+    },
+
+        "produtos" :
+	[
+        {
+            "cod_barras" : "9000000100008",
+                "valor" : 70.00,
+                "frete" : 0.00,
+                "seguro" : 0.00,
+                "desconto" : 0.00,
+                "outros" : 0.00,
+                "quantidade" : 1.00
+        },
+        {
+            "cod_barras" : "9000000200036",
+                "valor" : 30.00,
+                "frete" : 0.00,
+                "seguro" : 0.00,
+                "desconto" : 0.00,
+                "outros" : 0.00,
+                "quantidade" : 1.00
+        }
+	],
+
+        "pagamentos" :
+        [
+        {
+            "tipo_pagamento" : "C",
+                "valor_pagamento" : 100.00,
+                "token" : "",
+                "data_pagamento" : "2020-04-01 00:00:00",
+                "status" : "E",
+                "inf_pagamento" : "CARTAO VISA",
+                "numero_parcelas" : 1,
+                "bandeira" : "VISA"
+        }
+        ]
+    }*/
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pedido {
+public class PedidoCliente {
 
     //DADOS DO Cliente
     private String cpf_cnpj;
