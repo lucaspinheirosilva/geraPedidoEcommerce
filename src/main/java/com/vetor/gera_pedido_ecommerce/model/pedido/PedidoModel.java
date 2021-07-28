@@ -30,7 +30,7 @@ public class PedidoModel {
     private Integer prazo_entrega;
     private String origem;
 
-    List<PedidoCliente> clientesList;
+    List<String> clientesList;
     List<PedidoPamento> pamentosList;
     List<PedidoProduto> produtoList;
 
@@ -62,27 +62,5 @@ public class PedidoModel {
     private String bandeira;*/
 
 
-    public List<PedidoCliente> getClientesList() {
-        return clientesList;
-    }
 
-    public void setClientesList(List<PedidoCliente> clientesList) {
-        this.clientesList = clientesList;
-    }
-
-    public List<PedidoPamento> getPamentosList() {
-        return pamentosList;
-    }
-
-    public void setPamentosList(List<PedidoPamento> pamentosList) {
-        this.pamentosList = pamentosList;
-    }
-
-    public List<PedidoProduto> getProdutoList() {
-        return produtoList;
-    }
-
-    public void setProdutoList(List<PedidoProduto> produtoList) {
-        this.produtoList = produtoList;
-    }
 }

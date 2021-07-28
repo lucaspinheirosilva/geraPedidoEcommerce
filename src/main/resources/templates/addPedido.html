@@ -82,7 +82,7 @@
     Nome do Cliente:<input type="text" th:field="{nome_cliente}">
     <span th:if="${#fields.hasErrors('nome_cliente')}" th.errors="*{nome_cliente}"></span><br><br>
 
-    Data nasc.:<input type="date" th:field="{data_nasc_abe}">
+    Data nasc.:<input type="datetime-local" th:field="{data_nasc_abe}">
     <span th:if="${#fields.hasErrors('data_nasc_abe')}" th.errors="*{data_nasc_abe}"></span><br><br>
 
     Fisica ou Jurdica:<select id="fisica_juridica" th:field="{fisica_juridica}">
@@ -130,10 +130,13 @@
     Token:<input type="text" th:field="{token}" disabled="true" value="Token de teste">
     <span th:if="${#fields.hasErrors('token')}" th.errors="*{token}"></span><br><br>
 
-    Data pagamento:<input type="date" th:field="{data_pagamento}">
+    Data pagamento:<input type="datetime-local" th:field="{data_pagamento}">
     <span th:if="${#fields.hasErrors('data_pagamento')}" th.errors="*{data_pagamento}"></span><br><br>
 
-    Status:<input type="text" value="E" disabled="true" th:field="{status}">
+    Status:<select id="status" th:field="{status}">
+        <option value="E">Pagamento Confirmado</option>
+        <option value="P">Aguardando Pagamento</option></select>
+    </select>
     <span th:if="${#fields.hasErrors('status')}" th.errors="*{status}"></span><br><br>
 
     Informação de pagamento:<input type="text" th:field="{inf_pagamento}">

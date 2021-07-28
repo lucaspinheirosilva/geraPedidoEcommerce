@@ -1,6 +1,7 @@
 package com.vetor.gera_pedido_ecommerce.model.pedido;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PedidoCliente {
 
     //DADOS DO Cliente
@@ -17,7 +19,5 @@ public class PedidoCliente {
     private String data_nasc_abe;
     private String fisica_juridica;
 
-    private List<PedidoPamento> pagamentoList;
-    private List<PedidoProduto> produtosList;
 
 }
