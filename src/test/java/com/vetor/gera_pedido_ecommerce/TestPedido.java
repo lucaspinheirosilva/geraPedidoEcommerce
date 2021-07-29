@@ -2,20 +2,16 @@ package com.vetor.gera_pedido_ecommerce;
 
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
-import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPamento;
+import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
 public class TestPedido {
@@ -26,7 +22,6 @@ public class TestPedido {
         String criarPedidoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/pedido";
         String tokenAcesso = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMVUNBLTU0MzkiLCJleHAiOjE5NDIxNjI0MzUsInJvbCI6WyJST0xFX1VTRVIiXX0.fdtnDViKiT1xDtxOR0wM0xHzgEfkvtUKkD9Ab7tKSx-saQ-pB5iFFl4lu_j46Yxz81cIEKziJzTsB9s_IsEUog";
 
-
         //Instancia os objetos
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -36,12 +31,9 @@ public class TestPedido {
         PedidoProduto pedidoProduto = new PedidoProduto();
         PedidoModel pedidoModel = new PedidoModel();
         PedidoCliente pedidoCliente = new PedidoCliente();
-        PedidoPamento pedidoPamento = new PedidoPamento();
+        PedidoPagamento pedidoPagamento = new PedidoPagamento();
 
-        List<PedidoProduto> pedidoProdutoList = new ArrayList<>();
-        List<String> pedidoClienteList = new ArrayList<>();
-        List<PedidoPamento> pedidoPamentoList = new ArrayList<>();
-
+        /**https://www.baeldung.com/java-org-json***/
         JSONObject pedidosJSONobject = new JSONObject();
         JSONObject clienteJSONObject = new JSONObject();
 
@@ -87,15 +79,14 @@ public class TestPedido {
         pedidoProduto.setQuantidade(1);
 
         //setter PedidoPagamento
-        pedidoPamento.setTipo_pagamento("C");
-        pedidoPamento.setValor_pagamento(199.66F);
-        pedidoPamento.setToken("12122");
-        pedidoPamento.setData_pagamento("2021-07-20 00:00:00");
-        pedidoPamento.setStatus("P");
-        pedidoPamento.setInf_pagamento("CARTAO HIPERCARD");
-        pedidoPamento.setNumero_parcelas(3);
-        pedidoPamento.setBandeira("HIPERCARD");
-        pedidoPamentoList.add(pedidoPamento);//Cria um ArrayList de pedidoPagamento
+        pedidoPagamento.setTipo_pagamento("C");
+        pedidoPagamento.setValor_pagamento(199.66F);
+        pedidoPagamento.setToken("12122");
+        pedidoPagamento.setData_pagamento("2021-07-20 00:00:00");
+        pedidoPagamento.setStatus("P");
+        pedidoPagamento.setInf_pagamento("CARTAO HIPERCARD");
+        pedidoPagamento.setNumero_parcelas(3);
+        pedidoPagamento.setBandeira("HIPERCARD");
 
         //Começa a criar o JSON
         pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
@@ -134,14 +125,14 @@ public class TestPedido {
         produtoJSONArry.put(produtoJSONObject);
         pedidosJSONobject.put("produtos", produtoJSONArry);//Injeta o JSON do produto no PEDIDO
 
-        pagamentoJSONObject.put("tipo_pagamento", pedidoPamento.getTipo_pagamento());
-        pagamentoJSONObject.put("valor_pagamento", pedidoPamento.getValor_pagamento());
-        pagamentoJSONObject.put("token", pedidoPamento.getToken());
-        pagamentoJSONObject.put("data_pagamento", pedidoPamento.getData_pagamento());
-        pagamentoJSONObject.put("status", pedidoPamento.getStatus());
-        pagamentoJSONObject.put("inf_pagamento", pedidoPamento.getInf_pagamento());
-        pagamentoJSONObject.put("numero_parcelas", pedidoPamento.getNumero_parcelas());
-        pagamentoJSONObject.put("bandeira", pedidoPamento.getBandeira());
+        pagamentoJSONObject.put("tipo_pagamento", pedidoPagamento.getTipo_pagamento());
+        pagamentoJSONObject.put("valor_pagamento", pedidoPagamento.getValor_pagamento());
+        pagamentoJSONObject.put("token", pedidoPagamento.getToken());
+        pagamentoJSONObject.put("data_pagamento", pedidoPagamento.getData_pagamento());
+        pagamentoJSONObject.put("status", pedidoPagamento.getStatus());
+        pagamentoJSONObject.put("inf_pagamento", pedidoPagamento.getInf_pagamento());
+        pagamentoJSONObject.put("numero_parcelas", pedidoPagamento.getNumero_parcelas());
+        pagamentoJSONObject.put("bandeira", pedidoPagamento.getBandeira());
 
         pagamentoJSONArray.put(pagamentoJSONObject);
 

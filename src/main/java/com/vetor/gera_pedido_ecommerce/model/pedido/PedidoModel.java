@@ -30,9 +30,9 @@ public class PedidoModel {
     private Integer prazo_entrega;
     private String origem;
 
-    List<String> clientesList;
-    List<PedidoPamento> pamentosList;
-    List<PedidoProduto> produtoList;
+    /**List<String> clientesList;
+    List<PedidoPagamento> pamentosList;
+    List<PedidoProduto> produtoList;**/
 
 
     /*

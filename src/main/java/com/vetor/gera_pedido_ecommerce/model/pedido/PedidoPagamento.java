@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PedidoPamento {
+public class PedidoPagamento {
 
     //PAGAMENTO
     private String tipo_pagamento;

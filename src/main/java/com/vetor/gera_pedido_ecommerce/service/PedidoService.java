@@ -1,5 +1,8 @@
 package com.vetor.gera_pedido_ecommerce.service;
+import com.vetor.gera_pedido_ecommerce.model.Hash_Map;
+import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
+import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
 import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
 import org.json.JSONArray;
@@ -10,8 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -115,44 +117,90 @@ public class PedidoService {
     }
 
     //envia(faz o POST) do objeto PedidoCliente para o endPoin
-    public PedidoModel enviar(@Valid PedidoModel pedidoModel) {
-        List<PedidoProduto> ListpedidoProduto = new ArrayList();
-        PedidoProduto pedidoProduto = new PedidoProduto();
+    public PedidoModel enviar(@Valid PedidoModel pedidoModel,
+                              @Valid PedidoCliente pedidoCliente,
+                              @Valid PedidoProduto pedidoProduto,
+                              @Valid PedidoPagamento pedidoPagamento) {
 
-        JSONObject json = new JSONObject();
+
+
         JSONObject pedidosJSONobject = new JSONObject();
-        JSONArray array = new JSONArray();
+        JSONObject clienteJSONObject = new JSONObject();
 
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("observacoes", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("total_produtos", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("total_frete", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("total_seguro", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("total_desconto", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("total_outro", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("qtd_produtos", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("logradouro", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("numero", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("complemento", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("bairro", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("cidade", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
-        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        JSONObject produtoJSONObject = new JSONObject();
+        JSONArray produtoJSONArry = new JSONArray();
 
-        pedidoProduto.setCod_barras("654654654655");
-        pedidoProduto.setValor(10.99F);
-        pedidoProduto.setFrete(10.99F);
-        pedidoProduto.setSeguro(10.99F);
-        pedidoProduto.setDesconto(10.99F);
-        pedidoProduto.setOutros(10.99F);
-        pedidoProduto.setQuantidade(2);
+        JSONObject pagamentoJSONObject = new JSONObject();
+        JSONArray pagamentoJSONArray = new JSONArray();
 
-        ListpedidoProduto.add(pedidoProduto);
+        Hash_Map hashMap = new Hash_Map();
+        hashMap.mapPedido(pedidoModel);
+
+        Map<String,Object>objectMap = new HashMap<>();
+        Iterator it = hashMap.mapPedido(pedidoModel).entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry entry = (Map.Entry) it.next();
+            pedidosJSONobject.put(entry.getKey().toString(),entry.getValue());
+        }
+
+
+
+
+        pedidosJSONobject.put("",objectMap);
+
+        //Começa a criar o JSON
+        pedidosJSONobject.put("data_pedido", pedidoModel.getData_pedido());
+        pedidosJSONobject.put("observacoes", pedidoModel.getObservacoes());
+        pedidosJSONobject.put("total_produtos", pedidoModel.getTotal_produtos());
+        pedidosJSONobject.put("total_frete", pedidoModel.getTotal_frete());
+        pedidosJSONobject.put("total_seguro", pedidoModel.getTotal_seguro());
+        pedidosJSONobject.put("total_desconto", pedidoModel.getTotal_desconto());
+        pedidosJSONobject.put("total_outro", pedidoModel.getTotal_outro());
+        pedidosJSONobject.put("qtd_produtos", pedidoModel.getQtd_produtos());
+        pedidosJSONobject.put("logradouro", pedidoModel.getLogradouro());
+        pedidosJSONobject.put("numero", pedidoModel.getNumero());
+        pedidosJSONobject.put("complemento", pedidoModel.getComplemento());
+        pedidosJSONobject.put("bairro", pedidoModel.getBairro());
+        pedidosJSONobject.put("cidade", pedidoModel.getCidade());
+        pedidosJSONobject.put("estado", pedidoModel.getEstado());
+        pedidosJSONobject.put("cep", pedidoModel.getCep());
+        pedidosJSONobject.put("referencia", pedidoModel.getReferencia());
+        pedidosJSONobject.put("prazo_entrega", pedidoModel.getPrazo_entrega());
+        pedidosJSONobject.put("origem", pedidoModel.getOrigem());
+
+        //Cria um Json de ClientePedido
+        clienteJSONObject.put("cpf_cnpj", pedidoCliente.getCpf_cnpj());
+        clienteJSONObject.put("nome_cliente", pedidoCliente.getNome_cliente());
+        clienteJSONObject.put("data_nasc_abe", pedidoCliente.getData_nasc_abe());
+        clienteJSONObject.put("fisica_juridica", pedidoCliente.getFisica_juridica());
+        pedidosJSONobject.put("cliente", clienteJSONObject);//Injeta o JSON do cliente no PEDIDO
+
+        produtoJSONObject.put("cod_barras", pedidoProduto.getCod_barras());
+        produtoJSONObject.put("valor", pedidoProduto.getValor());
+        produtoJSONObject.put("frete", pedidoProduto.getFrete());
+        produtoJSONObject.put("seguro", pedidoProduto.getSeguro());
+        produtoJSONObject.put("desconto", pedidoProduto.getDesconto());
+        produtoJSONObject.put("outros", pedidoProduto.getOutros());
+        produtoJSONObject.put("quantidade", pedidoProduto.getQuantidade());
+        produtoJSONArry.put(produtoJSONObject);
+        pedidosJSONobject.put("produtos", produtoJSONArry);//Injeta o JSON do produto no PEDIDO
+
+        pagamentoJSONObject.put("tipo_pagamento", pedidoPagamento.getTipo_pagamento());
+        pagamentoJSONObject.put("valor_pagamento", pedidoPagamento.getValor_pagamento());
+        pagamentoJSONObject.put("token", pedidoPagamento.getToken());
+        pagamentoJSONObject.put("data_pagamento", pedidoPagamento.getData_pagamento());
+        pagamentoJSONObject.put("status", pedidoPagamento.getStatus());
+        pagamentoJSONObject.put("inf_pagamento", pedidoPagamento.getInf_pagamento());
+        pagamentoJSONObject.put("numero_parcelas", pedidoPagamento.getNumero_parcelas());
+        pagamentoJSONObject.put("bandeira", pedidoPagamento.getBandeira());
+
+        pagamentoJSONArray.put(pagamentoJSONObject);
+
+        pedidosJSONobject.put("pagamentos", pagamentoJSONArray);
+
+
+        System.out.println(pedidosJSONobject);
+
 
 
         return pedidoModel;
