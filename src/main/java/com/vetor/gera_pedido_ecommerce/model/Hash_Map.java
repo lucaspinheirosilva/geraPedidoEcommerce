@@ -1,9 +1,13 @@
 package com.vetor.gera_pedido_ecommerce.model;
-
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.Map;
 
 
@@ -15,6 +19,8 @@ public class Hash_Map {
 
 
     public Map<String,Object>mapPedido(PedidoModel pedidoModel){
+//Converte a data em um data valida pela API
+        pedidoModel.setData_pedido(formatarDataHora(pedidoModel.getData_pedido()));
 
         mapPedido.put("data_pedido", pedidoModel.getData_pedido());
         mapPedido.put("observacoes", pedidoModel.getObservacoes());
@@ -43,6 +49,8 @@ public class Hash_Map {
         //Cria um Json de ClientePedido
         mapCliente.put("cpf_cnpj", pedidoCliente.getCpf_cnpj());
         mapCliente.put("nome_cliente", pedidoCliente.getNome_cliente());
+        //Converte a data em um data valida pela API
+        pedidoCliente.setData_nasc_abe(formatarDataHora(pedidoCliente.getData_nasc_abe()));
         mapCliente.put("data_nasc_abe", pedidoCliente.getData_nasc_abe());
         mapCliente.put("fisica_juridica", pedidoCliente.getFisica_juridica());
 
@@ -63,11 +71,32 @@ public class Hash_Map {
         mapPagamento.put("tipo_pagamento", pedidoPagamento.getTipo_pagamento());
         mapPagamento.put("valor_pagamento", pedidoPagamento.getValor_pagamento());
         mapPagamento.put("token", pedidoPagamento.getToken());
+        //Converte a data em um data valida pela API
+        pedidoPagamento.setData_pagamento(formatarDataHora(pedidoPagamento.getData_pagamento()));
         mapPagamento.put("data_pagamento", pedidoPagamento.getData_pagamento());
         mapPagamento.put("numero_parcelas", pedidoPagamento.getNumero_parcelas());
         mapPagamento.put("bandeira", pedidoPagamento.getBandeira());
 
         return mapPagamento;
 
+    }
+    private String formatarDataHora(String data){
+
+        String dataFormatada="";
+        SimpleDateFormat dataParse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        try {
+            Date date = dataParse.parse(data);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+
+            dataFormatada = dateFormat.format(date);
+            System.out.println(dataFormatada);
+        }catch (ParseException parseException){
+            //parseException.printStackTrace();
+            System.out.println("---------------------->>ERRO..........");
+            System.out.println(parseException);
+        }
+
+        return dataFormatada;
     }
 }
