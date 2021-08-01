@@ -1,6 +1,7 @@
 package com.vetor.gera_pedido_ecommerce.service;
 
 import com.vetor.gera_pedido_ecommerce.model.Hash_Map;
+import com.vetor.gera_pedido_ecommerce.model.Resposta;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
@@ -15,9 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -28,9 +26,10 @@ public class PedidoService {
     final String tokenAcesso = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMVUNBLTU0MzkiLCJleHAiOjE5NDIxNjI0MzUsInJvbCI6WyJST0xFX1VTRVIiXX0.fdtnDViKiT1xDtxOR0wM0xHzgEfkvtUKkD9Ab7tKSx-saQ-pB5iFFl4lu_j46Yxz81cIEKziJzTsB9s_IsEUog";
 
 
+
     //Lista todos os produtos que contem no EndPoint
     public List<ProdutoModel> listaProdutos() throws URISyntaxException {
-        List<ProdutoModel> todosProdutos = new ArrayList<ProdutoModel>();
+        List<ProdutoModel> todosProdutos = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -38,7 +37,6 @@ public class PedidoService {
 
         HttpEntity<ProdutoModel> entity = new HttpEntity(headers);
         URI uri = new URI(listarProdutoURL);
-
 
         //pega a resposta e transporma em ResponseEntity<String>
         ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
@@ -121,12 +119,19 @@ public class PedidoService {
         return todosProdutos;
     }
 
-    //envia(faz o POST) do objeto PedidoCliente para o endPoin
-    public PedidoModel enviar(@Valid PedidoModel pedidoModel,
+    //envia(faz o POST) do objeto PedidoCliente para o endPoint
+    public Resposta enviar(@Valid PedidoModel pedidoModel,
                               @Valid PedidoCliente pedidoCliente,
                               @Valid PedidoProduto pedidoProduto,
-                              @Valid PedidoPagamento pedidoPagamento) {
+                              @Valid PedidoPagamento pedidoPagamento) throws URISyntaxException {
 
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(tokenAcesso);
+
+        URI uri = new URI(criarPedidoURL);
 
         JSONObject pedidosJSONobject = new JSONObject();
         JSONObject clienteJSONObject = new JSONObject();
@@ -138,18 +143,17 @@ public class PedidoService {
 
         Hash_Map hashMap = new Hash_Map();
 
+        //FAZ A ITERAÇÃO DO MAP E POPULA O JSON COM A kEY E vALUE DO MAP
         Iterator<Map.Entry<String, Object>> itPedido = hashMap.mapPedido(pedidoModel).entrySet().iterator();
         while (itPedido.hasNext()) {
             Map.Entry<String, Object> entryPedido = itPedido.next();
             pedidosJSONobject.put(entryPedido.getKey(), entryPedido.getValue());
         }
-
         Iterator<Map.Entry<String, Object>> itCliente = hashMap.mapCliente(pedidoCliente).entrySet().iterator();
         while (itCliente.hasNext()) {
             Map.Entry<String, Object> entryCliente = itCliente.next();
             clienteJSONObject.put(entryCliente.getKey(), entryCliente.getValue());
         }
-
         Iterator<Map.Entry<String, Object>> itProduto = hashMap.mapProduto(pedidoProduto).entrySet().iterator();
         while (itProduto.hasNext()) {
             Map.Entry<String, Object> entryProduto = itProduto.next();
@@ -162,27 +166,40 @@ public class PedidoService {
         }
 
         //Começa a criar o JSON
-
         //Cria um Json de ClientePedido
         pedidosJSONobject.put("cliente", clienteJSONObject);//Injeta o JSON do cliente no PEDIDO
-
 
         produtoJSONArry.put(produtoJSONObject);
         pedidosJSONobject.put("produtos", produtoJSONArry);//Injeta o JSON do produto no PEDIDO
 
-
         pagamentoJSONArray.put(pagamentoJSONObject);
         pedidosJSONobject.put("pagamentos", pagamentoJSONArray);//Injeta o JSON do pagamento no PEDIDO
 
-
         System.out.println(pedidosJSONobject);
 
+        HttpEntity<String> entity = new HttpEntity(pedidosJSONobject.toString(), headers);
+
+        //pega a resposta e transforma em ResponseEntity<String>
+        Resposta resposta =new Resposta();
+
+        resposta.setCodigo_pedido(0);
+        resposta.setMensagem("Pedido criado com sucesso");
+        resposta.setCodigo_pedido(1111);
+        //resposta = restTemplate.postForObject(uri, entity, Resposta.class);
+
+        System.out.println("PASSOU PELO RESPONSE ENTITY---->");
+
+        if (resposta.getMensagem() != null) {
+            System.out.println(resposta.getMensagem());
+            System.out.println("STATUS: "+resposta.getStatus());
+            System.out.println("CODIGO PEDIDO: "+resposta.getCodigo_pedido());
 
 
+            return resposta;
+        }
 
-        return pedidoModel;
+        return resposta;
     }
-
 
 }
 

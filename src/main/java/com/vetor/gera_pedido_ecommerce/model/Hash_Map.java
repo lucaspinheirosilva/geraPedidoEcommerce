@@ -86,13 +86,10 @@ public class Hash_Map {
         SimpleDateFormat dataParse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         try {
             Date date = dataParse.parse(data);
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-
             dataFormatada = dateFormat.format(date);
             System.out.println(dataFormatada);
         }catch (ParseException parseException){
-            //parseException.printStackTrace();
             System.out.println("---------------------->>ERRO..........");
             System.out.println(parseException);
         }
