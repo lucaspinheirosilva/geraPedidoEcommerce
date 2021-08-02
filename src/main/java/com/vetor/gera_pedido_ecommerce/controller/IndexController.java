@@ -1,6 +1,5 @@
 package com.vetor.gera_pedido_ecommerce.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.vetor.gera_pedido_ecommerce.model.Resposta;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
@@ -11,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -23,6 +21,8 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
+
+    Boolean sucessError;
     @Autowired
     PedidoService service = new PedidoService();
 
@@ -54,40 +54,42 @@ public class IndexController {
     }
 
     @PostMapping("/criarpedido")
-    public String criarPedido(@Valid PedidoModel pedidoModel,
+    public String criarPedido(ModelMap modelMap,
+                              @Valid PedidoModel pedidoModel,
                               @Valid PedidoCliente pedidoCliente,
                               @Valid PedidoProduto pedidoProduto,
-                              @Valid PedidoPagamento pedidoPagamento,
-                              BindingResult result) throws URISyntaxException {
+                              @Valid PedidoPagamento pedidoPagamento) throws URISyntaxException {
 
-
-        //TODO verificar uma forma desse MODEL nao vir null, pois esta dando #NullPointerOperation
-        Model model=null;
-        Map<String,String>map = new HashMap<>();
-        if (result.hasErrors()){
-            return "addPedido";
-        }
         Resposta resp =  service.enviar(pedidoModel,pedidoCliente,pedidoProduto,pedidoPagamento);
-        if (resp!=null){
-            map.put("resposta","PEDIDO CRIADO COM SUCESSO!!");
-           model.addAllAttributes(map);
+        if (resp.getMensagem()!=null){
+
+           sucessError =false;
             ResponseEntity.ok().build();
-            return "addPedido";
+            return "redirect:/mensagem";
         }
         else{
-            ResponseEntity.badRequest().build();
-            map.put("resposta","ERRO AO CRIAR PEDIDO!!");
-            model.addAllAttributes(map);
-            return "";
+            sucessError=true;
+            return "redirect:/mensagem";
+        }
+    }
+    @RequestMapping("/mensagem")
+    public String retorno(ModelMap modelMap){
+        String mensagemRetorno;
+        String urlImagem;
+        if (sucessError){
+            mensagemRetorno ="ERRO AO CRIAR PEDIDO";
+            urlImagem="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-oB_vwYAH-l74eNksTsds5uwc9SLf_gpRsQ&usqp=CAU";
+            modelMap.addAttribute("imagem",urlImagem);
+
+        }else {
+            urlImagem="https://static6.depositphotos.com/1080758/571/v/600/depositphotos_5713103-stock-illustration-answer22.jpg";
+            mensagemRetorno ="PEDIDO CRIADO COM SUCESSO!!";
+            modelMap.addAttribute("imagem",urlImagem);
         }
 
+        modelMap.addAttribute("resposta", mensagemRetorno);
 
-
-
-        //TODO:parei em 17:39 min
-       //TODO:  https://www.youtube.com/watch?v=cVikO4bF_fg&list=PLfIr3ukPHb1Q8UoxKpH1syc45i0RR4Tqu&index=3
-
-
+        return "mensagem.html";
     }
 
 }

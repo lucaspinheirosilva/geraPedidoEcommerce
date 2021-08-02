@@ -187,8 +187,6 @@ public class PedidoService {
         resposta.setCodigo_pedido(1111);
         //resposta = restTemplate.postForObject(uri, entity, Resposta.class);
 
-        System.out.println("PASSOU PELO RESPONSE ENTITY---->");
-
         if (resposta.getMensagem() != null) {
             System.out.println(resposta.getMensagem());
             System.out.println("STATUS: "+resposta.getStatus());

@@ -44,61 +44,61 @@
 
                     <!--DADOS DO PEDIDO-->
                     <h3>Dados do Pedido </h3>
-                    Data Pedido:<input type="datetime-local" required th:field="*{data_pedido}">
+                    Data Pedido:<input type="datetime-local"  th:field="${pedido.data_pedido}">
                     <span th:if="${#fields.hasErrors('data_pedido')}" th.errors="*{data_pedido}"></span><br><br>
 
-                    Observaçoes:<input type="text" required th:field="*{observacoes}">
+                    Observaçoes:<input type="text"  th:field="*{observacoes}">
                     <span th:if="${#fields.hasErrors('observacoes')}" th.errors="*{observacoes}"></span><br><br>
 
-                    valores totais produtos:<input type="number" required value="0.00" min="0.00" max="10000.00"
+                    valores totais produtos:<input type="number" value="0.00" min="0.00" max="10000.00"
                         th:field="*{total_produtos}">
                     <span th:if="${#fields.hasErrors('total_produtos')}" th.errors="*{total_produtos}"></span><br><br>
 
-                    total de frete:<input type="number" required value="0.00" min="0.00" max="10000.00"
+                    total de frete:<input type="number" value="0.00" min="0.00" max="10000.00"
                         th:field="*{total_frete}">
                     <span th:if="${#fields.hasErrors('total_frete')}" th.errors="*{total_frete}"></span><br><br>
 
-                    total de seguro:<input type="number" required value="0.00" min="0.00" max="10000.00"
+                    total de seguro:<input type="number" value="0.00" min="0.00" max="10000.00"
                         th:field="*{total_seguro}">
                     <span th:if="${#fields.hasErrors('total_seguro')}" th.errors="*{total_seguro}"></span><br><br>
 
-                    total de descontos:<input type="number" required value="0.00" min="0.00" max="10000.00"
+                    total de descontos:<input type="number" value="0.00" min="0.00" max="10000.00"
                         th:field="*{total_desconto}">
                     <span th:if="${#fields.hasErrors('total_desconto')}" th.errors="*{total_desconto}"></span><br><br>
 
-                    total outros:<input type="number" required value="0.00" min="0.00" max="10000.00"
+                    total outros:<input type="number" value="0.00" min="0.00" max="10000.00"
                         th:field="*{total_outro}">
                     <span th:if="${#fields.hasErrors('total_outro')}" th.errors="*{total_outro}"></span><br><br>
 
-                    quantidade de produtos:<input type="number" required value="2" min="1" max="2"
+                    quantidade de produtos:<input type="number" value="2" min="1" max="2"
                         th:field="*{qtd_produtos}">
                     <span th:if="${#fields.hasErrors('qtd_produtos')}" th.errors="*{qtd_produtos}"></span><br><br>
 
-                    logradouro:<input type="text" required MINLENGTH="3" th:field="*{logradouro}">
+                    logradouro:<input type="text" MINLENGTH="3" th:field="*{logradouro}">
                     <span th:if="${#fields.hasErrors('logradouro')}" th.errors="*{logradouro}"></span><br><br>
 
-                    numero:<input type="number" required th:field="*{numero}">
+                    numero:<input type="number" th:field="*{numero}">
                     <span th:if="${#fields.hasErrors('numero')}" th.errors="*{numero}"></span><br><br>
 
                     complemento:<input type="text" th:field="*{complemento}">
                     <span th:if="${#fields.hasErrors('complemento')}" th.errors="*{complemento}"></span><br><br>
 
-                    bairro:<input type="text" required MINLENGTH="3" th:field="*{bairro}">
+                    bairro:<input type="text" MINLENGTH="3" th:field="*{bairro}">
                     <span th:if="${#fields.hasErrors('bairro')}" th.errors="*{bairro}"></span><br><br>
 
-                    cidade:<input type="text" required th:field="*{cidade}">
+                    cidade:<input type="text" th:field="*{cidade}">
                     <span th:if="${#fields.hasErrors('cidade')}" th.errors="*{cidade}"></span><br><br>
 
-                    cep:<input type="text" required th:field="*{cep}">
+                    cep:<input type="text" th:field="*{cep}">
                     <span th:if="${#fields.hasErrors('cep')}" th.errors="*{cep}"></span><br><br>
 
-                    estado:<input type="text" required th:field="*{estado}">
+                    estado:<input type="text" th:field="*{estado}">
                     <span th:if="${#fields.hasErrors('estado')}" th.errors="*{estado}"></span><br><br>
 
                     referencia:<input type="text" th:field="*{referencia}">
                     <span th:if="${#fields.hasErrors('referencia')}" th.errors="*{referencia}"></span><br><br>
 
-                    prazo de entrega:<input type="number" required min="1" max="30" th:field="*{prazo_entrega}">
+                    prazo de entrega:<input type="number" min="1" max="30" th:field="*{prazo_entrega}">
                     <span th:if="${#fields.hasErrors('prazo_entrega')}" th.errors="*{prazo_entrega}"></span><br><br>
 
                     origem:<select id="origem" name="origem" th:field="*{origem}">
@@ -116,13 +116,13 @@
                 <div class="col-4" th:object="${cliente}">
 
                     <h3>Dados do Cliente</h3>
-                    cpf ou cnpj:<input type="text" required th:field="*{cpf_cnpj}">
+                    cpf ou cnpj:<input type="text" th:field="*{cpf_cnpj}">
                     <span th:if="${#fields.hasErrors('cpf_cnpj')}" th.errors="*{cpf_cnpj}"></span><br><br>
 
-                    Nome do Cliente:<input type="text" required th:field="*{nome_cliente}">
+                    Nome do Cliente:<input type="text" th:field="*{nome_cliente}">
                     <span th:if="${#fields.hasErrors('nome_cliente')}" th.errors="*{nome_cliente}"></span><br><br>
 
-                    Data nasc.:<input type="datetime-local" required th:field="*{data_nasc_abe}">
+                    Data nasc.:<input type="datetime-local" th:field="*{data_nasc_abe}">
                     <span th:if="${#fields.hasErrors('data_nasc_abe')}" th.errors="*{data_nasc_abe}"></span><br><br>
 
                     Fisica ou Jurdica:<select id="fisica_juridica" th:field="*{fisica_juridica}">
@@ -139,26 +139,26 @@
 
                     <h3>Informaçao dos Produtos</h3>
 
-                    Codigo de barras:<input type="text" maxlength="13" required th:field="*{cod_barras}">
+                    Codigo de barras:<input type="text" maxlength="13" th:field="*{cod_barras}">
                     <span th:if="${#fields.hasErrors('cod_barras')}" th.errors="*{cod_barras}"></span><br><br>
 
-                    Valor:<input type="number" required value="0.00" min="0.00" max="10000.00" th:field="*{valor}">
+                    Valor:<input type="number" value="0.00" min="0.00" max="10000.00" th:field="*{valor}">
                     <span th:if="${#fields.hasErrors('valor')}" th.errors="*{valor}"></span><br><br>
 
-                    Frete:<input type="number" required value="0.00" min="0.00" max="10000.00" th:field="*{frete}">
+                    Frete:<input type="number" value="0.00" min="0.00" max="10000.00" th:field="*{frete}">
                     <span th:if="${#fields.hasErrors('frete')}" th.errors="*{frete}"></span><br><br>
 
-                    Seguro:<input type="number" required value="0.00" min="0.00" max="10000.00" th:field="*{seguro}">
+                    Seguro:<input type="number" value="0.00" min="0.00" max="10000.00" th:field="*{seguro}">
                     <span th:if="${#fields.hasErrors('seguro')}" th.errors="*{seguro}"></span><br><br>
 
-                    Desconto:<input type="number" required value="0.00" min="0.00" max="10000.00"
+                    Desconto:<input type="number" value="0.00" min="0.00" max="10000.00"
                         th:field="*{desconto}">
                     <span th:if="${#fields.hasErrors('desconto')}" th.errors="*{desconto}"></span><br><br>
 
-                    Outros:<input type="number" required value="0.00" min="0.00" max="10000.00" th:field="*{outros}">
+                    Outros:<input type="number" value="0.00" min="0.00" max="10000.00" th:field="*{outros}">
                     <span th:if="${#fields.hasErrors('outros')}" th.errors="*{outros}"></span><br><br>
 
-                    Quantidade:<input type="number" required min="1" max="5" th:field="*{quantidade}">
+                    Quantidade:<input type="number" min="1" max="5" th:field="*{quantidade}">
                     <span th:if="${#fields.hasErrors('quantidade')}" th.errors="*{quantidade}"></span><br><br>
 
                 </div>
@@ -168,33 +168,32 @@
                 <div class="col-4" th:object="${pagamento}">
 
                     <h3>Informação sobre o pagamento</h3>
-                    Tipo de Pagamento<select id="tipo_pagamento" required th:field="*{tipo_pagamento}">
+                    Tipo de Pagamento<select id="tipo_pagamento" th:field="*{tipo_pagamento}">
                         <option value="C">Cartão</option>
                         <option value="B">Boleto</option>
                     </select>
                     <span th:if="${#fields.hasErrors('tipo_pagamento')}" th.errors="*{tipo_pagamento}"></span><br><br>
 
-                    Valor de Pagamento:<input type="number" required value="0.00" min="0.00" max="100000.00"
+                    Valor de Pagamento:<input type="number" value="0.00" min="0.00" max="100000.00"
                         th:field="*{valor_pagamento}">
                     <span th:if="${#fields.hasErrors('valor_pagamento')}" th.errors="*{valor_pagamento}"></span><br><br>
 
                     Token:<input type="text" th:field="*{token}" disabled="true" value="Token de teste">
                     <span th:if="${#fields.hasErrors('token')}" th.errors="*{token}"></span><br><br>
 
-                    Data pagamento:<input type="datetime-local" required th:field="*{data_pagamento}">
+                    Data pagamento:<input type="datetime-local" th:field="*{data_pagamento}">
                     <span th:if="${#fields.hasErrors('data_pagamento')}" th.errors="*{data_pagamento}"></span><br><br>
 
                     Status:<select id="status" th:field="*{status}">
                         <option value="E">Pagamento Confirmado</option>
                         <option value="P">Aguardando Pagamento</option>
                     </select>
-                    </select>
                     <span th:if="${#fields.hasErrors('status')}" th.errors="*{status}"></span><br><br>
 
-                    Informação de pagamento:<input type="text" required th:field="*{inf_pagamento}">
+                    Informação de pagamento:<input type="text" th:field="*{inf_pagamento}">
                     <span th:if="${#fields.hasErrors('inf_pagamento')}" th.errors="*{inf_pagamento}"></span><br><br>
 
-                    Numero de Parcelas:<input type="number" required min="1" max="12" th:field="*{numero_parcelas}">
+                    Numero de Parcelas:<input type="number" min="1" max="12" th:field="*{numero_parcelas}">
                     <span th:if="${#fields.hasErrors('numero_parcelas')}" th.errors="*{numero_parcelas}"></span><br><br>
 
                     Bandeira:<select id="bandeira" th:field="*{bandeira}">
@@ -208,8 +207,9 @@
                 </div>
             </div>
         </div>
+        <!--RESPOSTA-->
         <div style="margin-left:35%;margin-bottom:1%;" th:each="resposta:${resposta}">
-                    <h3 th:inline="text">[[${resposta}}]]</h3>
+                    <h3 th:inline="text">${resposta}</h3>
                 </div>
 
         <div style="margin-left:35%;margin-bottom:3%;">
