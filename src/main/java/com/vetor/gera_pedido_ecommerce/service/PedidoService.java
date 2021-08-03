@@ -166,7 +166,6 @@ public class PedidoService {
         }
 
         //Começa a criar o JSON
-        //Cria um Json de ClientePedido
         pedidosJSONobject.put("cliente", clienteJSONObject);//Injeta o JSON do cliente no PEDIDO
 
         produtoJSONArry.put(produtoJSONObject);
@@ -182,10 +181,12 @@ public class PedidoService {
         //pega a resposta e transforma em ResponseEntity<String>
         Resposta resposta =new Resposta();
 
-        resposta.setCodigo_pedido(0);
+        /**APENAS TESTES*/
+       /* resposta.setCodigo_pedido(0);
         resposta.setMensagem("Pedido criado com sucesso");
-        resposta.setCodigo_pedido(1111);
-        //resposta = restTemplate.postForObject(uri, entity, Resposta.class);
+        resposta.setCodigo_pedido(1111);*/
+
+        resposta = restTemplate.postForObject(uri, entity, Resposta.class);
 
         if (resposta.getMensagem() != null) {
             System.out.println(resposta.getMensagem());
