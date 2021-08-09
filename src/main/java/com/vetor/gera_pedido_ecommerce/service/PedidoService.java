@@ -2,13 +2,17 @@ package com.vetor.gera_pedido_ecommerce.service;
 
 import com.vetor.gera_pedido_ecommerce.model.Hash_Map;
 import com.vetor.gera_pedido_ecommerce.model.Resposta;
+import com.vetor.gera_pedido_ecommerce.model.token.Token;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
 import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
+import com.vetor.gera_pedido_ecommerce.repository.TokenRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,14 +21,18 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
+@Slf4j
 public class PedidoService {
+    @Autowired
+    private TokenRepository repository;
+
+
     final String criarPedidoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/pedido";
     final String listarProdutoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/produtos";
-    final String tokenAcesso = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMVUNBLTU0MzkiLCJleHAiOjE5NDIxNjI0MzUsInJvbCI6WyJST0xFX1VTRVIiXX0.fdtnDViKiT1xDtxOR0wM0xHzgEfkvtUKkD9Ab7tKSx-saQ-pB5iFFl4lu_j46Yxz81cIEKziJzTsB9s_IsEUog";
-
 
 
     //Lista todos os produtos que contem no EndPoint
@@ -33,7 +41,8 @@ public class PedidoService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(tokenAcesso);
+        headers.setBearerAuth("teste");
+        //headers.setBearerAuth(tokenAcesso);
 
         HttpEntity<ProdutoModel> entity = new HttpEntity(headers);
         URI uri = new URI(listarProdutoURL);
@@ -119,17 +128,45 @@ public class PedidoService {
         return todosProdutos;
     }
 
+    //Lista os Token no Banco de Dados
+    public List<Token> listarToken() {
+        List<Token> tokens = repository.localizarToken();
+
+        List<Token> listAll = tokens.stream().map(Token::new).collect(Collectors.toList());
+
+        return listAll;
+    }
+
+    //Lista o token por parametro GRUPO
+    public List<Token>listarPorGrupo(String grupo){
+         List<Token> listGrupo = repository.localizarPorGrupo(grupo).stream().map(Token::new).collect(Collectors.toList());
+
+        return listGrupo;
+    }
+
     //envia(faz o POST) do objeto PedidoCliente para o endPoint
     public Resposta enviar(@Valid PedidoModel pedidoModel,
-                              @Valid PedidoCliente pedidoCliente,
-                              @Valid PedidoProduto pedidoProduto,
-                              @Valid PedidoPagamento pedidoPagamento) throws URISyntaxException {
+                           @Valid PedidoCliente pedidoCliente,
+                           @Valid PedidoProduto pedidoProduto,
+                           @Valid PedidoPagamento pedidoPagamento,
+                           @Valid Token token) throws URISyntaxException {
 
+        List<Token> listaGrupos = listarPorGrupo(token.getGrupo());
+
+        for (Token listaGrupo : listaGrupos) {
+            System.out.println(listaGrupo);
+
+            token.setId(listaGrupo.getId());
+            token.setGrupo(listaGrupo.getGrupo());
+            token.setToken(listaGrupo.getToken());
+            token.setIsAtivo(listaGrupo.getIsAtivo());
+            token.setNome(listaGrupo.getNome());
+        }
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(tokenAcesso);
+        headers.setBearerAuth(token.getToken());
 
         URI uri = new URI(criarPedidoURL);
 
@@ -179,25 +216,28 @@ public class PedidoService {
         HttpEntity<String> entity = new HttpEntity(pedidosJSONobject.toString(), headers);
 
         //pega a resposta e transforma em ResponseEntity<String>
-        Resposta resposta =new Resposta();
+        Resposta resposta = new Resposta();
 
-        /**APENAS TESTES*/
-       /* resposta.setCodigo_pedido(0);
-        resposta.setMensagem("Pedido criado com sucesso");
-        resposta.setCodigo_pedido(1111);*/
+        try {
+            resposta = restTemplate.postForObject(uri, entity, Resposta.class);
 
-        resposta = restTemplate.postForObject(uri, entity, Resposta.class);
 
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
+        assert resposta != null;
         if (resposta.getMensagem() != null) {
             System.out.println(resposta.getMensagem());
-            System.out.println("STATUS: "+resposta.getStatus());
-            System.out.println("CODIGO PEDIDO: "+resposta.getCodigo_pedido());
+            System.out.println("STATUS: " + resposta.getStatus());
+            System.out.println("CODIGO PEDIDO: " + resposta.getCodigo_pedido());
 
 
             return resposta;
         }
 
         return resposta;
+
     }
 
 }

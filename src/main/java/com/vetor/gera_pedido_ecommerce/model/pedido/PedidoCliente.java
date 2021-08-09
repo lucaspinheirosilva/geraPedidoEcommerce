@@ -1,5 +1,6 @@
 package com.vetor.gera_pedido_ecommerce.model.pedido;
 
+import com.vetor.gera_pedido_ecommerce.model.token.Token;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class PedidoCliente {
     private String nome_cliente;
     private String data_nasc_abe;
     private String fisica_juridica;
+
 
 
 }

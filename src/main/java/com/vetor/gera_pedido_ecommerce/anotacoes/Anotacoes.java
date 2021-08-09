@@ -1,4 +1,4 @@
-package com.vetor.gera_pedido_ecommerce.lixo;
+package com.vetor.gera_pedido_ecommerce.anotacoes;
 
 public class Anotacoes {
 
@@ -143,3 +143,8 @@ public class Anotacoes {
         ]
     }*/
 }
+
+//TODO> melhorar a mensagem final ao cadastrar o pedido
+//TODO: implementar o busca CEP
+//TODO: implementar o campo Codigo de barras, para buscar altomatico
+//TODO> Colocar os campos REQUIRED novamente

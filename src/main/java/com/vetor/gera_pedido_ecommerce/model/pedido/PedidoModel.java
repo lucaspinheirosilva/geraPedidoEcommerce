@@ -1,5 +1,6 @@
 package com.vetor.gera_pedido_ecommerce.model.pedido;
 
+import com.vetor.gera_pedido_ecommerce.model.token.Token;
 import lombok.*;
 
 import java.util.List;
@@ -32,7 +33,8 @@ public class PedidoModel {
 
     /**List<String> clientesList;
     List<PedidoPagamento> pamentosList;
-    List<PedidoProduto> produtoList;**/
+    List<PedidoProduto> produtoList;
+     private Token[] token ;**/
 
 
     /*

@@ -53,6 +53,7 @@ public class Hash_Map {
         mapCliente.put("cpf_cnpj", pedidoCliente.getCpf_cnpj());
         mapCliente.put("nome_cliente", pedidoCliente.getNome_cliente());
         //Converte a data em um data valida pela API
+        pedidoCliente.setData_nasc_abe(pedidoCliente.getData_nasc_abe()+"T00:00");
         pedidoCliente.setData_nasc_abe(formatarDataHora(pedidoCliente.getData_nasc_abe()));
         mapCliente.put("data_nasc_abe", pedidoCliente.getData_nasc_abe());
         mapCliente.put("fisica_juridica", pedidoCliente.getFisica_juridica());

@@ -5,10 +5,12 @@ import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
+import com.vetor.gera_pedido_ecommerce.service.PedidoService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,6 +22,8 @@ import java.util.Map;
 @SpringBootTest
 public class TestPedido {
 
+    @Autowired
+    PedidoService service;
 
     @Test
     public void metodoPost() throws JSONException {
@@ -86,4 +90,8 @@ public class TestPedido {
 
     }
 
+    @Test
+    public void testeAleatorio() {
+
+    }
 }
