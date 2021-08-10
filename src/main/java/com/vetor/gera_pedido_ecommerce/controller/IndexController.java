@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -28,7 +29,8 @@ public class IndexController {
     @Autowired
     Token token;
 
-    Boolean sucessError;
+    Boolean sucess;
+    Resposta resp = new Resposta();
 
 
     @RequestMapping(value = "/")
@@ -52,14 +54,14 @@ public class IndexController {
         List<Token> listToken;
 
 
-        listToken=service.listarToken();
+        listToken = service.listarToken();
 
         map.put("pedido", new PedidoModel());
         map.put("cliente", new PedidoCliente());
         map.put("produto", new PedidoProduto());
         map.put("pagamento", new PedidoPagamento());
-        map.put("token",new Token());
-        map.put("grupoSelecionado",listToken);
+        map.put("token", new Token());
+        map.put("grupoSelecionado", listToken);
 
         model.addAllAttributes(map);
         return "addPedido";
@@ -75,15 +77,16 @@ public class IndexController {
                               @Valid Token token) throws URISyntaxException {
 
 
-
-        Resposta resp = service.enviar(pedidoModel, pedidoCliente, pedidoProduto, pedidoPagamento,token);
-        if (resp.getMensagem() != null) {
-
-            sucessError = false;
+        Resposta resp = service.enviar(pedidoModel, pedidoCliente, pedidoProduto, pedidoPagamento, token);
+        this.resp = resp;
+        //ERRO AO CRIAR PEDIDO
+        if (resp.getCodigo_pedido() == 0) {
+            sucess = true;
             ResponseEntity.ok().build();
             return "redirect:/mensagem";
+            //SUCESSO AO CRIAR PEDIDO
         } else {
-            sucessError = true;
+            sucess = false;
             return "redirect:/mensagem";
         }
     }
@@ -92,19 +95,22 @@ public class IndexController {
     public String retorno(ModelMap modelMap) {
         String mensagemRetorno;
         String urlImagem;
-        if (sucessError) {
+        String motivoErro = "";
+        if (sucess) {
             mensagemRetorno = "ERRO AO CRIAR PEDIDO, FALE COM O ADMINISTRADOR!!";
             urlImagem = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-oB_vwYAH-l74eNksTsds5uwc9SLf_gpRsQ&usqp=CAU";
-            modelMap.addAttribute("imagem", urlImagem);
+            motivoErro = resp.getMensagem();
+
 
         } else {
             urlImagem = "https://static6.depositphotos.com/1080758/571/v/600/depositphotos_5713103-stock-illustration-answer22.jpg";
             mensagemRetorno = "PEDIDO CRIADO COM SUCESSO, VERIFIQUE NO Mitryus.com";
-            modelMap.addAttribute("imagem", urlImagem);
+
         }
 
         modelMap.addAttribute("resposta", mensagemRetorno);
-
+        modelMap.addAttribute("imagem", urlImagem);
+        modelMap.addAttribute("motivoErro", motivoErro);
         return "mensagem.html";
     }
 

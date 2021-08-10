@@ -218,12 +218,16 @@ public class PedidoService {
         //pega a resposta e transforma em ResponseEntity<String>
         Resposta resposta = new Resposta();
 
+
+        String erroTryCatch="";
         try {
             resposta = restTemplate.postForObject(uri, entity, Resposta.class);
 
 
         }catch (Exception e){
+            //erroTryCatch=e.getCause().toString();
             log.error(e.getMessage());
+            erroTryCatch = e.getMessage();
         }
 
         assert resposta != null;
@@ -236,6 +240,7 @@ public class PedidoService {
             return resposta;
         }
 
+        resposta.setMensagem(erroTryCatch);
         return resposta;
 
     }

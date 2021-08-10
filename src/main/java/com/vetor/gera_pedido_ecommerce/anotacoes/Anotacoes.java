@@ -78,7 +78,7 @@ public class Anotacoes {
         pedido.setToken("nao_precisa");*/
 
 
-    //ESTRUTUTO DO post PEDIDO
+    //ESTRUTURA DO post PEDIDO
    /* {
         "data_pedido" : "2020-04-01 00:00:00",
             "observacoes" : "INTEGRACAO DO PEDIDO",
@@ -144,7 +144,9 @@ public class Anotacoes {
     }*/
 }
 
-//TODO> melhorar a mensagem final ao cadastrar o pedido
-//TODO: implementar o busca CEP
+
+
 //TODO: implementar o campo Codigo de barras, para buscar altomatico
 //TODO> Colocar os campos REQUIRED novamente
+//TODO> (FEITO)-melhorar a mensagem final ao cadastrar o pedido
+// TODO: (FEITO)-implementar o busca CEP

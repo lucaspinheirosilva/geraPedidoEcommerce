@@ -24,6 +24,11 @@
       <center>  <img  th:src="${imagem}" style="width:15%" class="img-rounded" alt="retorno"></center>
     </div>
 
+    <!--CASO HOUVER ERRO, IRA MOSTRAR AQUI O MOTIVO-->
+    <div class="row">
+        <h3 style="text-align: center;height:100%;margin-top: 5%;margin-bottom: 1%;flex-shrink:inherit" th:text="'Motivo --> '+${motivoErro}"></h3>
+    </div>
+
     <div class="row" style="text-align: center;height: 100%;width: 100%;">
         <a href="add">Voltar</a>
     </div>

@@ -13,10 +13,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <!--Importando Script Jquery-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 </head>
 
-<body >
+<body>
 <div class="container">
     <div class="row" style="text-align:center;margin:1%">
         <h1>Adicionar Pedidos</h1>
@@ -26,14 +28,16 @@
 </div>
 
 
-<form action="#" th:action="@{/criarpedido}" method="post" >
+<form action="#" th:action="@{/criarpedido}" method="post">
 
     <!--GRUPO-->
-    <div class="row" style="text-align:center;margin:0.5%;margin-left:25%;margin-right:25%" th:object="${token}"  >
+    <div class="row" style="text-align:center;margin:0.5%;margin-left:25%;margin-right:25%" th:object="${token}">
         <h3>ESCOLHA UM GR PARA INSERIR O PEDIDO</h3>
-        <select id="grupo" name="grupo" th:field="${token.grupo}">
-            <option th:each="var:${grupoSelecionado}"  th:value=${var.grupo} th:text="${var.grupo}+' --- '+${var.nome}"></option>
+        <select id="grupo" name="grupo" required th:field="${token.grupo}">
             <option value="" selected>Escolha um Grupo</option>
+            <option th:each="var:${grupoSelecionado}" th:value=${var.grupo}
+                    th:text="${var.grupo}+' --- '+${var.nome}"></option>
+
         </select>
         <!--<span th:if="${#fields.hasErrors('token')}" th.errors="*{token}"></span><br><br>-->
         <hr>
@@ -81,7 +85,10 @@
                                                  th:field="*{qtd_produtos}">
                 <span th:if="${#fields.hasErrors('qtd_produtos')}" th.errors="*{qtd_produtos}"></span><br><br>
 
-                ==>logradouro:<input type="text" MINLENGTH="3" th:field="*{logradouro}">
+                ==>cep:<input type="text" th:field="*{cep}" id="cep">
+                <span th:if="${#fields.hasErrors('cep')}" th.errors="*{cep}"></span><br><br>
+
+                ==>logradouro:<input type="text" MINLENGTH="3" th:field="*{logradouro}" id="logradouro">
                 <span th:if="${#fields.hasErrors('logradouro')}" th.errors="*{logradouro}"></span><br><br>
 
                 ==>numero:<input type="number" th:field="*{numero}">
@@ -90,16 +97,13 @@
                 complemento:<input type="text" th:field="*{complemento}">
                 <span th:if="${#fields.hasErrors('complemento')}" th.errors="*{complemento}"></span><br><br>
 
-                ==>bairro:<input type="text" MINLENGTH="3" th:field="*{bairro}">
+                ==>bairro:<input type="text" MINLENGTH="3" th:field="*{bairro}" id="bairro">
                 <span th:if="${#fields.hasErrors('bairro')}" th.errors="*{bairro}"></span><br><br>
 
                 ==>cidade:<input type="text" th:field="*{cidade}">
                 <span th:if="${#fields.hasErrors('cidade')}" th.errors="*{cidade}"></span><br><br>
 
-                ==>cep:<input type="text" th:field="*{cep}">
-                <span th:if="${#fields.hasErrors('cep')}" th.errors="*{cep}"></span><br><br>
-
-                ==>estado:<input type="text" th:field="*{estado}">
+                ==>estado:<input type="text" th:field="*{estado}" id="uf">
                 <span th:if="${#fields.hasErrors('estado')}" th.errors="*{estado}"></span><br><br>
 
                 referencia:<input type="text" th:field="*{referencia}">
@@ -223,6 +227,45 @@
     <div style="margin-left:35%;margin-bottom:3%;">
         <button type="submit" style="width: 50%" class="btn btn-success">CRIAR PEDIDO</button>
     </div>
+
+    <!--SCRIPT PARA PREENCHER OS CAPOS COM BASE NO CEP-->
+    <script type="text/javascript">
+	$("#cep").focusout(function(){
+		//Início do Comando AJAX
+		$.ajax({
+			//O campo URL diz o caminho de onde virá os dados
+			//É importante concatenar o valor digitado no CEP
+			url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/unicode/',
+
+			//Aqui você deve preencher o tipo de dados que será lido,
+			//no caso, estamos lendo JSON.
+			dataType: 'json',
+
+			//SUCESS é referente a função que será executada caso
+			//ele consiga ler a fonte de dados com sucesso.
+			//O parâmetro dentro da função se refere ao nome da variável
+			//que você vai dar para ler esse objeto.
+			success: function(resposta){
+
+				//Agora basta definir os valores que você deseja preencher
+				//automaticamente nos campos acima.
+				$("#logradouro").val(resposta.logradouro);
+				$("#complemento").val(resposta.complemento);
+				$("#bairro").val(resposta.bairro);
+				$("#cidade").val(resposta.localidade);
+				$("#uf").val(resposta.uf);
+
+				//Vamos incluir para que o Número seja focado automaticamente
+				//melhorando a experiência do usuário
+				$("#numero").focus();
+			}
+		});
+	});
+
+
+
+                </script>
+
 
 
 </form>
