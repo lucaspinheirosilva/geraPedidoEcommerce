@@ -1,10 +1,46 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Lista de Produtos</title>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Listar Produtos</title>
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+    <!--Importando Script Jquery-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 </head>
 <body>
+
+<!--Listar Produtos-->
+<div class="row" style="text-align:center;margin:0.5%;margin-left:25%;margin-right:25%">
+    <!--GRUPO-->
+    <div class="row">
+        <h3>ESCOLHA UM GR PARA INSERIR O PEDIDO</h3>
+        <select id="grupo" name="grupo" required>
+            <option value="" selected>Escolha um Grupo</option>
+            <option th:each="var:${grupoSelecionado}" th:value=${var.grupo}
+                    th:text="${var.grupo}+' --- '+${var.nome}"></option>
+
+        </select>
+        <!--<span th:if="${#fields.hasErrors('token')}" th.errors="*{token}"></span><br><br>-->
+        <hr>
+    </div>
+
+    <h3>Lista de Produtos Ecommerce</h3>
+    <hr>
+
+    <div th:each="var:${listaProdutos}" >
+        <p th:text="${var.cod_produto}+'--'+${var.nome_produto}"></p>
+    </div>
+
+</div>
 
 </body>
 </html>

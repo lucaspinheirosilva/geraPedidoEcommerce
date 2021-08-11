@@ -1,6 +1,7 @@
 package com.vetor.gera_pedido_ecommerce.controller;
 
 import com.vetor.gera_pedido_ecommerce.model.Resposta;
+import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
 import com.vetor.gera_pedido_ecommerce.model.token.Token;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,28 +35,52 @@ public class IndexController {
     Resposta resp = new Resposta();
 
 
+
+    //INDEX
     @RequestMapping(value = "/")
     @GetMapping()
     public String GetInicial() {
         return "index";
     }
 
+    //LISTAR TODOS OS PRODUTOS (POR NOME)
     @RequestMapping("/listAll")
     @GetMapping
-    public String produto(Model model) throws URISyntaxException {
-        model.addAttribute("listaProdutos", service.listaProdutos());
-        return "listaProdudos";
+    public String listaProduto(Model model) throws URISyntaxException {
+        ProdutoModel produtoModel = new ProdutoModel();
+        List<ProdutoModel>produtoModelList = new ArrayList<>();
+
+        List<ProdutoModel> retorno = service.listaProdutos();
+        for (int i=0;i<retorno.size();i++){
+            produtoModel.setCod_produto(retorno.get(i).getCod_produto());
+            produtoModel.setNome_produto(retorno.get(i).getNome_produto());
+
+            produtoModelList.add(produtoModel);
+        }
+
+        List<ProdutoModel> list = new ArrayList<>();
+        produtoModel.setNome_produto(produtoModel.getNome_produto());
+        List<Token> listToken = service.listarToken();
+        if (produtoModel.getCod_produto()==0){
+
+            list.add(produtoModel);
+            model.addAttribute("listaProdutos",list);
+            model.addAttribute("grupoSelecionado", listToken);
+        }else{
+            model.addAttribute("listaProdutos", service.listaProdutos());
+            model.addAttribute("grupoSelecionado", listToken);
+        }
+        return "listarProdutos";
     }
 
+    //CADASTRO DE PEDIDOS
     @RequestMapping("/add")
     @GetMapping("/add")
+    @CrossOrigin(origins = "http://localhost:8080/add")
+    /*https://www.onlinetutorialspoint.com/spring-boot/how-to-enable-spring-boot-cors-example-crossorigin.html*/
     public String pedidoFormulario(Model model) {
         Map<String, Object> map = new HashMap<>();
-
-        List<Token> listToken;
-
-
-        listToken = service.listarToken();
+        List<Token> listToken = service.listarToken();
 
         map.put("pedido", new PedidoModel());
         map.put("cliente", new PedidoCliente());
@@ -66,7 +92,6 @@ public class IndexController {
         model.addAllAttributes(map);
         return "addPedido";
     }
-
 
     @PostMapping("/criarpedido")
     public String criarPedido(ModelMap modelMap,
@@ -91,6 +116,7 @@ public class IndexController {
         }
     }
 
+    //RETORNO DE MENSSAGEM (sucesso ou erro) DO CADASTRO DE PEDIDO
     @RequestMapping("/mensagem")
     public String retorno(ModelMap modelMap) {
         String mensagemRetorno;
@@ -113,5 +139,6 @@ public class IndexController {
         modelMap.addAttribute("motivoErro", motivoErro);
         return "mensagem.html";
     }
-
 }
+
+
