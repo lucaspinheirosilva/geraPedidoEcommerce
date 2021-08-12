@@ -41,6 +41,10 @@
         </select>
         <!--<span th:if="${#fields.hasErrors('token')}" th.errors="*{token}"></span><br><br>-->
         <hr>
+        <div>
+            <p style="color:Tomato;" id="erro" ></p>
+        </div>
+
     </div>
 
     <div class="container" style="width:100%;margin-left: 2%;">
@@ -229,6 +233,7 @@
     <!--https://velhobit.com.br/programacao/carregando-cep-cidades-dinamicamente.html-->
 
     <script type="text/javascript" th:src="@{/js/buscaCep.js}"></script>
+    <script type="text/javascript" th:src="@{/js/populaSelectPedido.js}"></script>
 
 
 

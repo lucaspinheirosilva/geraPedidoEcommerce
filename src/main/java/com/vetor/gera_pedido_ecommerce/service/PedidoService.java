@@ -1,5 +1,4 @@
 package com.vetor.gera_pedido_ecommerce.service;
-
 import com.vetor.gera_pedido_ecommerce.model.Hash_Map;
 import com.vetor.gera_pedido_ecommerce.model.Resposta;
 import com.vetor.gera_pedido_ecommerce.model.produtos.CodigoBarrasModel;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,21 +34,45 @@ public class PedidoService {
     final String listarProdutoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/produtos";
     final String listarCodigoBarrasURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/codigosbarra";
 
+    public PedidoService() {
+    }
+
 
     //Lista todos os produtos que contem no EndPoint
-    public List<ProdutoModel> listaProdutos() throws URISyntaxException {
+    public List<ProdutoModel> listaProdutos(String grupo){
+
+        List<Token> tokens = repository.localizarPorGrupo(grupo).stream().map(Token::new).collect(Collectors.toList());
+
+        Token token = new Token();
+        for (Token listaGrupo : tokens) {
+            System.out.println(listaGrupo);
+
+            token.setId(listaGrupo.getId());
+            token.setGrupo(listaGrupo.getGrupo());
+            token.setToken(listaGrupo.getToken());
+            token.setIsAtivo(listaGrupo.getIsAtivo());
+            token.setNome(listaGrupo.getNome());
+        }
+
         List<ProdutoModel> todosProdutos = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         // headers.setBearerAuth("teste");
-         headers.setBearerAuth("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMVUNBLTU0MzkiLCJleHAiOjE5NDQyMzI3NjIsInJvbCI6WyJST0xFX1VTRVIiXX0.kvvO3-yk4Gcd2GIczLqxWMey-2yGq5IG1EYudGPdW9KSWVLnvtJ_emiyusxZgZ-5pnwRqxHcaSglNISJWrb3dQ");
+         headers.setBearerAuth(token.getToken());
 
         HttpEntity<ProdutoModel> entity = new HttpEntity(headers);
-        URI uri = new URI(listarProdutoURL);
+        URI uri=null;
+        try {
+            uri = new URI(listarProdutoURL);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         try {
             //pega a resposta e transporma em ResponseEntity<String>
+
+            assert uri != null;
             ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
             System.out.println("PASSOU PELO RESPONSE ENTITY---->" + response.getBody());
 
@@ -222,6 +244,8 @@ public class PedidoService {
 
     }
 
+
+    //Lista todos os codigos de barras
     public List<CodigoBarrasModel> listarCodigoBarras(String grupo) {
         List<Token> tokens = repository.localizarPorGrupo(grupo).stream().map(Token::new).collect(Collectors.toList());
 
@@ -240,7 +264,6 @@ public class PedidoService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         List<CodigoBarrasModel> listBarrasModels = new ArrayList<>();
-        // headers.setBearerAuth("teste");
         headers.setBearerAuth(token.getToken());
 
         HttpEntity<ProdutoModel> entity = new HttpEntity(headers);
@@ -274,9 +297,10 @@ public class PedidoService {
 
             System.out.println(listBarrasModels.size());
 
+            //se for igual a 0 é pq nao tem produto cadastrado no ecommerce
             if (listBarrasModels.size()==0){
                 CodigoBarrasModel codigoBarrasModel = new CodigoBarrasModel();
-                codigoBarrasModel.setCod_barra("NENHUM PRODUTO CADASTRADO");
+                codigoBarrasModel.setRetorno("NENHUM PRODUTO CADASTRADO");
                 listBarrasModels.add(codigoBarrasModel);
             }
 
@@ -284,7 +308,7 @@ public class PedidoService {
 
         }catch (Exception e){
             CodigoBarrasModel codigoBarrasModel = new CodigoBarrasModel();
-            codigoBarrasModel.setCod_barra("ERRO NO TOKEN DE INTEGRAÇÃO");
+            codigoBarrasModel.setRetorno("ERRO NO TOKEN DE INTEGRAÇÃO-->"+e.getMessage());
             listBarrasModels.add(codigoBarrasModel);
             System.out.println(e.getMessage());
 

@@ -30,22 +30,3 @@ $("#cep").focusout(function(){
 			}
 		});
 	});
-	//BUSCA CODIGO DE BARRAS POR GRUPO
-$("#grupo").change(function(){
-        		$.ajax({
-    		    url: '/listacodbarras/'+$(this).val(),
-    			dataType: 'json',
-    			success: function(response){
-    			//console.log(response)
-
-    			var len = response.length;
-    			$("#codbarras").empty();
-    			 for( var i = 0; i<len; i++){
-                    var codbarras = response[i]['cod_barra'];
-                    $("#codbarras").append("<option value='"+codbarras+"'>"+codbarras+"</option>");
-    			 }
-
-    				$("#valorprod").focus();
-    			}
-    		});
-    	});

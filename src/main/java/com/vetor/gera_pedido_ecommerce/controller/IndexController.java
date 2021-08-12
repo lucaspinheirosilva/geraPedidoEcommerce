@@ -35,7 +35,6 @@ public class IndexController {
     Resposta resp = new Resposta();
 
 
-
     //INDEX
     @RequestMapping(value = "/")
     @GetMapping()
@@ -46,30 +45,12 @@ public class IndexController {
     //LISTAR TODOS OS PRODUTOS (POR NOME)
     @RequestMapping("/listAll")
     @GetMapping
-    public String listaProduto(Model model) throws URISyntaxException {
-        ProdutoModel produtoModel = new ProdutoModel();
-        List<ProdutoModel>produtoModelList = new ArrayList<>();
-
-        List<ProdutoModel> retorno = service.listaProdutos();
-        for (int i=0;i<retorno.size();i++){
-            produtoModel.setCod_produto(retorno.get(i).getCod_produto());
-            produtoModel.setNome_produto(retorno.get(i).getNome_produto());
-
-            produtoModelList.add(produtoModel);
-        }
+    public String listaProduto(Model model) {
 
         List<ProdutoModel> list = new ArrayList<>();
-        produtoModel.setNome_produto(produtoModel.getNome_produto());
-        List<Token> listToken = service.listarToken();
-        if (produtoModel.getCod_produto()==0){
 
-            list.add(produtoModel);
-            model.addAttribute("listaProdutos",list);
-            model.addAttribute("grupoSelecionado", listToken);
-        }else{
-            model.addAttribute("listaProdutos", service.listaProdutos());
-            model.addAttribute("grupoSelecionado", listToken);
-        }
+        List<Token> listToken = service.listarToken();
+        model.addAttribute("grupoSelecionado", listToken);
         return "listarProdutos";
     }
 
@@ -81,6 +62,7 @@ public class IndexController {
     public String pedidoFormulario(Model model) {
         Map<String, Object> map = new HashMap<>();
         List<Token> listToken = service.listarToken();
+
 
         map.put("pedido", new PedidoModel());
         map.put("cliente", new PedidoCliente());

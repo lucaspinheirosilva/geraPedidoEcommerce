@@ -20,4 +20,6 @@ public class CodigoBarrasModel {
     private boolean variacao_principal;
     private String ean;
     private float qnt_estoque_disponivel;
+
+    String retorno;
 }
