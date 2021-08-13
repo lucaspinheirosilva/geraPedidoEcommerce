@@ -8,6 +8,7 @@ import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
 import com.vetor.gera_pedido_ecommerce.service.PedidoService;
+import com.vetor.gera_pedido_ecommerce.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class IndexController {
     @Autowired
     PedidoService service = new PedidoService();
     @Autowired
-    Token token;
+    TokenService tokenService;
 
     Boolean sucess;
     Resposta resp = new Resposta();
@@ -49,7 +50,7 @@ public class IndexController {
 
         List<ProdutoModel> list = new ArrayList<>();
 
-        List<Token> listToken = service.listarToken();
+        List<Token> listToken = tokenService.listarToken();
         model.addAttribute("grupoSelecionado", listToken);
         return "listarProdutos";
     }
@@ -61,7 +62,7 @@ public class IndexController {
     /*https://www.onlinetutorialspoint.com/spring-boot/how-to-enable-spring-boot-cors-example-crossorigin.html*/
     public String pedidoFormulario(Model model) {
         Map<String, Object> map = new HashMap<>();
-        List<Token> listToken = service.listarToken();
+        List<Token> listToken = tokenService.listarToken();
 
 
         map.put("pedido", new PedidoModel());

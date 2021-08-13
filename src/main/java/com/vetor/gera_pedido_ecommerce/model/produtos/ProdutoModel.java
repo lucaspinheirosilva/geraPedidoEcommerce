@@ -43,6 +43,8 @@ public class ProdutoModel {
     private Float comprimento;
     private Boolean pronta_entrega;
 
+    private String retorno;
+
 
 }
 

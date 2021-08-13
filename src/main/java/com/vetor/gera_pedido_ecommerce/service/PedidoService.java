@@ -27,121 +27,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PedidoService {
     @Autowired
-    private TokenRepository repository;
+    TokenService tokenService;
 
-
-    final String criarPedidoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/pedido";
-    final String listarProdutoURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/produtos";
-    final String listarCodigoBarrasURL = "https://wss.mitryus.com.br/api/ecommerce/integracao/codigosbarra";
-
-    public PedidoService() {
-    }
-
-
-    //Lista todos os produtos que contem no EndPoint
-    public List<ProdutoModel> listaProdutos(String grupo){
-
-        List<Token> tokens = repository.localizarPorGrupo(grupo).stream().map(Token::new).collect(Collectors.toList());
-
-        Token token = new Token();
-        for (Token listaGrupo : tokens) {
-            System.out.println(listaGrupo);
-
-            token.setId(listaGrupo.getId());
-            token.setGrupo(listaGrupo.getGrupo());
-            token.setToken(listaGrupo.getToken());
-            token.setIsAtivo(listaGrupo.getIsAtivo());
-            token.setNome(listaGrupo.getNome());
-        }
-
-        List<ProdutoModel> todosProdutos = new ArrayList<>();
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        // headers.setBearerAuth("teste");
-         headers.setBearerAuth(token.getToken());
-
-        HttpEntity<ProdutoModel> entity = new HttpEntity(headers);
-        URI uri=null;
-        try {
-            uri = new URI(listarProdutoURL);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            //pega a resposta e transporma em ResponseEntity<String>
-
-            assert uri != null;
-            ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-            System.out.println("PASSOU PELO RESPONSE ENTITY---->" + response.getBody());
-
-            //Mapeia o JSON e guarda as informaçoes nas variavies
-            JSONObject object = new JSONObject(response.getBody());
-            JSONArray array = object.getJSONArray("Produtos");
-            for (int i = 0; i < array.length(); i++) {
-                ProdutoModel produtoModel = new ProdutoModel();
-
-                produtoModel.setCod_produto(array.getJSONObject(i).getInt("cod_produto"));
-                produtoModel.setCod_fornecedor(array.getJSONObject(i).getInt("cod_fornecedor"));
-                produtoModel.setCod_departamento(array.getJSONObject(i).getInt("cod_departamento"));
-                produtoModel.setCod_grupo(array.getJSONObject(i).getInt("cod_grupo"));
-                produtoModel.setCod_subgrupo(array.getJSONObject(i).getInt("cod_subgrupo"));
-                produtoModel.setCod_secao(array.getJSONObject(i).getInt("cod_secao"));
-                produtoModel.setCod_estacao(array.getJSONObject(i).getInt("cod_estacao"));
-                produtoModel.setCod_estilo(array.getJSONObject(i).getInt("cod_estilo"));
-
-                produtoModel.setNome_produto(array.getJSONObject(i).getString("nome_produto"));
-                produtoModel.setDsc_produto_web(array.getJSONObject(i).getString("dsc_produto_web"));
-                produtoModel.setIs_ativo(array.getJSONObject(i).getBoolean("is_ativo"));
-                produtoModel.setIs_fora_linha( array.getJSONObject(i).getBoolean("is_fora_linha"));
-                produtoModel.setNcm(array.getJSONObject(i).getString("ncm"));
-                produtoModel.setOrdenacao(array.getJSONObject(i).getInt("ordenacao"));
-                produtoModel.setDsc_marca(array.getJSONObject(i).get("dsc_marca").toString());
-                produtoModel.setDsc_modelo(array.getJSONObject(i).getString("dsc_modelo"));
-                produtoModel.setDsc_referencia(array.getJSONObject(i).getString("dsc_referencia"));
-
-                produtoModel.setVl_custo_liquido(array.getJSONObject(i).getFloat("vl_custo_liquido"));
-                produtoModel.setVl_venda_vista(array.getJSONObject(i).getFloat("vl_venda_vista"));
-                produtoModel.setVl_venda_prazo(array.getJSONObject(i).getFloat("vl_venda_prazo"));
-
-                produtoModel.setPeso_bruto(array.getJSONObject(i).getFloat("peso_bruto"));
-                produtoModel.setPeso_liquido(array.getJSONObject(i).getFloat("peso_liquido"));
-                produtoModel.setAltura(array.getJSONObject(i).getFloat("altura"));
-                produtoModel.setLargura(array.getJSONObject(i).getFloat("largura"));
-                produtoModel.setComprimento(array.getJSONObject(i).getFloat("comprimento"));
-                produtoModel.setPronta_entrega(array.getJSONObject(i).getBoolean("pronta_entrega"));
-
-                todosProdutos.add(produtoModel);
-            }
-
-        }catch (Exception e){
-            ProdutoModel produtoModel = new ProdutoModel();
-            produtoModel.setCod_produto(0);
-            produtoModel.setNome_produto(e.getMessage());
-            todosProdutos.add(produtoModel);
-            System.out.println(e.getMessage());
-        }
-
-        //Retorna a Lista de todos os produtos
-        return todosProdutos;
-    }
-
-    //Lista os Token no Banco de Dados
-    public List<Token> listarToken() {
-        List<Token> tokens = repository.localizarToken();
-
-        List<Token> listAll = tokens.stream().map(Token::new).collect(Collectors.toList());
-
-        return listAll;
-    }
-
-    //Lista o token por parametro GRUPO
-    public List<Token>listarPorGrupo(String grupo){
-         List<Token> listGrupo = repository.localizarPorGrupo(grupo).stream().map(Token::new).collect(Collectors.toList());
-
-        return listGrupo;
-    }
+    EndPoints endPoints = new EndPoints();
 
     //envia(faz o POST) do objeto PedidoCliente para o endPoint
     public Resposta enviar(@Valid PedidoModel pedidoModel,
@@ -150,7 +38,7 @@ public class PedidoService {
                            @Valid PedidoPagamento pedidoPagamento,
                            @Valid Token token) throws URISyntaxException {
 
-        List<Token> listaGrupos = listarPorGrupo(token.getGrupo());
+        List<Token> listaGrupos = tokenService.listarPorGrupo(token.getGrupo());
 
         for (Token listaGrupo : listaGrupos) {
             System.out.println(listaGrupo);
@@ -167,7 +55,8 @@ public class PedidoService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(token.getToken());
 
-        URI uri = new URI(criarPedidoURL);
+
+        URI uri = new URI(endPoints.criarPedidoURL);
 
         JSONObject pedidosJSONobject = new JSONObject();
         JSONObject clienteJSONObject = new JSONObject();
@@ -245,79 +134,6 @@ public class PedidoService {
     }
 
 
-    //Lista todos os codigos de barras
-    public List<CodigoBarrasModel> listarCodigoBarras(String grupo) {
-        List<Token> tokens = repository.localizarPorGrupo(grupo).stream().map(Token::new).collect(Collectors.toList());
 
-        Token token = new Token();
-        for (Token listaGrupo : tokens) {
-            System.out.println(listaGrupo);
-
-            token.setId(listaGrupo.getId());
-            token.setGrupo(listaGrupo.getGrupo());
-            token.setToken(listaGrupo.getToken());
-            token.setIsAtivo(listaGrupo.getIsAtivo());
-            token.setNome(listaGrupo.getNome());
-        }
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        List<CodigoBarrasModel> listBarrasModels = new ArrayList<>();
-        headers.setBearerAuth(token.getToken());
-
-        HttpEntity<ProdutoModel> entity = new HttpEntity(headers);
-        URI uri ;
-        try {
-             uri = new URI(listarCodigoBarrasURL);
-
-            //pega a resposta e transporma em ResponseEntity<String>
-            ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-            JSONObject jsonObject = new JSONObject(response.getBody());
-            System.out.println("PASSOU PELO RESPONSE ENTITY---->" + response.getBody());
-
-
-            JSONArray array = jsonObject.getJSONArray("CodigosBarra");
-            for (int i = 0; i < array.length(); i++) {
-                CodigoBarrasModel codigoBarrasModel = new CodigoBarrasModel();
-
-                codigoBarrasModel.setCod_barra(array.getJSONObject(i).getString("cod_barra"));
-                codigoBarrasModel.setCod_cor_1(array.getJSONObject(i).getInt("cod_cor_1"));
-                codigoBarrasModel.setCod_cor_2(array.getJSONObject(i).getInt("cod_cor_2"));
-                codigoBarrasModel.setCod_cor_3(array.getJSONObject(i).getInt("cod_cor_3"));
-                codigoBarrasModel.setCod_produto(array.getJSONObject(i).getInt("cod_produto"));
-                codigoBarrasModel.setCod_tamanho(array.getJSONObject(i).getInt("cod_tamanho"));
-                codigoBarrasModel.setIntegracao_ativa(array.getJSONObject(i).getBoolean("integracao_ativa"));
-                codigoBarrasModel.setVariacao_principal(array.getJSONObject(i).getBoolean("variacao_principal"));
-                codigoBarrasModel.setEan(array.getJSONObject(i).getString("ean"));
-                codigoBarrasModel.setQnt_estoque_disponivel(array.getJSONObject(i).getFloat("qnt_estoque_disponivel"));
-
-                listBarrasModels.add(codigoBarrasModel);
-            }
-
-            System.out.println(listBarrasModels.size());
-
-            //se for igual a 0 é pq nao tem produto cadastrado no ecommerce
-            if (listBarrasModels.size()==0){
-                CodigoBarrasModel codigoBarrasModel = new CodigoBarrasModel();
-                codigoBarrasModel.setRetorno("NENHUM PRODUTO CADASTRADO");
-                listBarrasModels.add(codigoBarrasModel);
-            }
-
-            return listBarrasModels;
-
-        }catch (Exception e){
-            CodigoBarrasModel codigoBarrasModel = new CodigoBarrasModel();
-            codigoBarrasModel.setRetorno("ERRO NO TOKEN DE INTEGRAÇÃO-->"+e.getMessage());
-            listBarrasModels.add(codigoBarrasModel);
-            System.out.println(e.getMessage());
-
-        }
-
-
-return listBarrasModels;
-
-
-    }
 }
 

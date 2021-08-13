@@ -3,7 +3,7 @@ package com.vetor.gera_pedido_ecommerce.controller;
 import com.vetor.gera_pedido_ecommerce.model.produtos.CodigoBarrasModel;
 import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
 import com.vetor.gera_pedido_ecommerce.service.PedidoService;
-import org.json.JSONObject;
+import com.vetor.gera_pedido_ecommerce.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +16,14 @@ import java.util.List;
 public class ProdutoController {
 
     @Autowired
-    PedidoService service;
+    ProdutoService produtoService;
 
     //LISTA TODOS OS CODIGOS DE BARRAS
     @RequestMapping(value = "/listacodbarras/{grupo}")
     @GetMapping()
     public List<CodigoBarrasModel> listaCodigoBarras(@PathVariable("grupo") String grupo){
 
-        return service.listarCodigoBarras(grupo);
+        return produtoService.listarCodigoBarras(grupo);
     }
 
     //LISTA TODOS OS PRODUTOS
@@ -31,7 +31,7 @@ public class ProdutoController {
     @GetMapping()
     public List<ProdutoModel>listProduto(@PathVariable("grupo")String grupo){
 
-        List<ProdutoModel> listProd = service.listaProdutos(grupo);
+        List<ProdutoModel> listProd = produtoService.listaProdutos(grupo);
         return listProd;
 
     }

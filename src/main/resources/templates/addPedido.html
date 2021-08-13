@@ -19,6 +19,34 @@
 </head>
 
 <body>
+
+<div class="container">
+    <div class="row" style="margin:1%">
+        <div class="col-4">
+            <a href="/">
+                <img th:src="@{/images/home.png}" class="img-rounded" width="15%" alt="Cinque Terre">
+            </a>
+
+        </div>
+        <div class="col-4">
+            <a href="/listAll">
+                <button type="button" class="btn btn-success">Listar Produtos E-commerce</button>
+            </a>
+
+        </div>
+        <div class="col-4">
+            <a href="/add">
+                <button type="button" class="btn btn-success">Add Pedido Ecommerce</button>
+            </a>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
 <div class="container">
     <div class="row" style="text-align:center;margin:1%">
         <h1>Adicionar Pedidos</h1>
@@ -232,8 +260,8 @@
     <!--SCRIPT PARA PREENCHER OS CAPOS COM BASE NO CEP-->
     <!--https://velhobit.com.br/programacao/carregando-cep-cidades-dinamicamente.html-->
 
-    <script type="text/javascript" th:src="@{/js/buscaCep.js}"></script>
-    <script type="text/javascript" th:src="@{/js/populaSelectPedido.js}"></script>
+    <script type="text/javascript" th:src="@{/buscaCep.js}"></script>
+    <script type="text/javascript" th:src="@{/populaSelectPedido.js}"></script>
 
 
 

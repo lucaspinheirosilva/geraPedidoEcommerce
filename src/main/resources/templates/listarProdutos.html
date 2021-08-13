@@ -17,13 +17,38 @@
 
 </head>
 <body>
-<!--SCRIPT PARA PREENCHER OS CAPOS COM BASE NO CEP-->
-<!--https://velhobit.com.br/programacao/carregando-cep-cidades-dinamicamente.html-->
+<div class="container">
+    <div class="row" style="margin:1%">
+        <div class="col-4">
+            <a href="/">
+                <img th:src="@{/images/home.png}" class="img-rounded" width="15%" alt="Cinque Terre">
+            </a>
+
+        </div>
+        <div class="col-4">
+            <a href="/listAll">
+                <button type="button" class="btn btn-success">Listar Produtos E-commerce</button>
+            </a>
+
+        </div>
+        <div class="col-4">
+            <a href="/add">
+                <button type="button" class="btn btn-success">Add Pedido Ecommerce</button>
+            </a>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
 <!--Listar Produtos-->
 <div class="row" style="text-align:center;margin:0.5%;margin-left:25%;margin-right:25%">
     <!--GRUPO-->
     <div class="row">
-        <h3>ESCOLHA UM GR PARA INSERIR O PEDIDO</h3>
+        <h3>ESCOLHA UM GR PARA LISTAR OS PRODUTOS</h3>
         <select id="grupo" name="grupo" required>
             <option value="" selected>Escolha um Grupo</option>
             <option th:each="var:${grupoSelecionado}" th:value=${var.grupo}
@@ -32,17 +57,20 @@
         </select>
         <!--<span th:if="${#fields.hasErrors('token')}" th.errors="*{token}"></span><br><br>-->
         <hr>
+        <div>
+            <p style="color:Tomato;" id="erro"></p>
+        </div>
     </div>
 
     <h3>Lista de Produtos Ecommerce</h3>
     <hr>
 
     <div>
-        <p ></p>
+        <p></p>
     </div>
     <div>
 
-        <table id="produtos" style="width:100%" >
+        <table id="produtos" style="width:100%">
 
         </table>
 
@@ -51,10 +79,6 @@
 </div>
 
 
-
-
-
-
-<script type="text/javascript" th:src="@{/js/populaListaProduto.js}"></script>
+<script type="text/javascript" th:src="@{/populaListaProduto.js}"></script>
 </body>
 </html>
