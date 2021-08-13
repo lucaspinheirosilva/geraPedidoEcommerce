@@ -74,10 +74,10 @@ public class Anotacoes {
 }
 
 
+//TODO> Colocar os campos REQUIRED novamente
 
 //TODO> (FEITO)Implementar o mesmo retorno de erro da tela de pedidos(os listar o token) na listagem de produtos
-//TODO> arrumar a função de listar produtos
-//TODO> Colocar os campos REQUIRED novamente
+//TODO> (FEITO)arrumar a função de listar produtos
 //TODO> (FEITO)-melhorar a mensagem final ao cadastrar o pedido
 //TODO: (FEITO)-implementar o busca CEP
 //TODO: (FEITO)implementar o campo Codigo de barras, para buscar altomatico

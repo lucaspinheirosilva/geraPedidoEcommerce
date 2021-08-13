@@ -37,8 +37,8 @@ public class IndexController {
 
 
     //INDEX
-    @RequestMapping(value = "/")
-    @GetMapping()
+
+    @GetMapping("/")
     public String GetInicial() {
         return "index";
     }
@@ -52,11 +52,11 @@ public class IndexController {
 
         List<Token> listToken = tokenService.listarToken();
         model.addAttribute("grupoSelecionado", listToken);
-        return "listarProdutos";
+        return "/listarProdutos";
     }
 
     //CADASTRO DE PEDIDOS
-    @RequestMapping("/add")
+
     @GetMapping("/add")
     @CrossOrigin(origins = "http://localhost:8080/add")
     /*https://www.onlinetutorialspoint.com/spring-boot/how-to-enable-spring-boot-cors-example-crossorigin.html*/
@@ -73,7 +73,7 @@ public class IndexController {
         map.put("grupoSelecionado", listToken);
 
         model.addAllAttributes(map);
-        return "addPedido";
+        return "/addPedido";
     }
 
     @PostMapping("/criarpedido")

@@ -19,16 +19,15 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     //LISTA TODOS OS CODIGOS DE BARRAS
-    @RequestMapping(value = "/listacodbarras/{grupo}")
-    @GetMapping()
+      @GetMapping("/listacodbarras/{grupo}")
     public List<CodigoBarrasModel> listaCodigoBarras(@PathVariable("grupo") String grupo){
 
         return produtoService.listarCodigoBarras(grupo);
     }
 
     //LISTA TODOS OS PRODUTOS
-    @RequestMapping(value = "/listaprodutos/{grupo}")
-    @GetMapping()
+
+    @GetMapping("/listaprodutos/{grupo}")
     public List<ProdutoModel>listProduto(@PathVariable("grupo")String grupo){
 
         List<ProdutoModel> listProd = produtoService.listaProdutos(grupo);
