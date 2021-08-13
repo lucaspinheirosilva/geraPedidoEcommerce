@@ -27,7 +27,7 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     //LISTAR TODOS OS PRODUTOS (POR NOME)
-    @RequestMapping("/listAll")
+    @RequestMapping(value = "/listAll",method = RequestMethod.GET)
     public String listaProduto(Model model) {
 
         List<ProdutoModel> list = new ArrayList<>();
@@ -46,7 +46,7 @@ public class ProdutoController {
 
     //LISTA TODOS OS PRODUTOS
 
-    @RequestMapping("/listaprodutos/{grupo}")
+    @RequestMapping(value = "/listaprodutos/{grupo}",method = RequestMethod.GET)
     @ResponseBody
     public List<ProdutoModel>listProduto(@PathVariable("grupo")String grupo){
 

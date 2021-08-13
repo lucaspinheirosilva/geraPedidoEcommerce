@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/ws/pedido")
+@RequestMapping("/ws/pedido" )
 public class PedidoController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class PedidoController {
 
     //CADASTRO DE PEDIDOS
 
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:8080/add")
     /*https://www.onlinetutorialspoint.com/spring-boot/how-to-enable-spring-boot-cors-example-crossorigin.html*/
     public String pedidoFormulario(Model model) {
@@ -55,7 +55,7 @@ public class PedidoController {
         return "addPedido";
     }
 
-    @PostMapping("/criarpedido")
+    @RequestMapping(value = "/criarpedido",method = RequestMethod.POST)
     public String criarPedido(ModelMap modelMap,
                               @Valid PedidoModel pedidoModel,
                               @Valid PedidoCliente pedidoCliente,
@@ -79,7 +79,7 @@ public class PedidoController {
     }
 
     //RETORNO DE MENSSAGEM (sucesso ou erro) DO CADASTRO DE PEDIDO
-    @RequestMapping("/mensagem")
+    @RequestMapping(value = "/mensagem",method = RequestMethod.GET)
     public String retorno(ModelMap modelMap) {
         String mensagemRetorno;
         String urlImagem;
