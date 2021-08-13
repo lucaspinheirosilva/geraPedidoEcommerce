@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class GeraPedidoEcommerceApplication extends SpringBootServletInitializer {
+public class GeraPedidoEcommerceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GeraPedidoEcommerceApplication.class, args);
