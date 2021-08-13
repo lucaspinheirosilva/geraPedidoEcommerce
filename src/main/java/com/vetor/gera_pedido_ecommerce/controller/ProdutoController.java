@@ -27,7 +27,7 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     //LISTAR TODOS OS PRODUTOS (POR NOME)
-    @GetMapping("/listAll")
+    @RequestMapping("/listAll")
     public String listaProduto(Model model) {
 
         List<ProdutoModel> list = new ArrayList<>();
@@ -37,7 +37,7 @@ public class ProdutoController {
         return "listarProdutos";
     }
     //LISTA TODOS OS CODIGOS DE BARRAS
-    @GetMapping("/listacodbarras/{grupo}")
+    @RequestMapping("/listacodbarras/{grupo}")
     @ResponseBody
     public List<CodigoBarrasModel> listaCodigoBarras(@PathVariable("grupo") String grupo){
 
@@ -46,7 +46,7 @@ public class ProdutoController {
 
     //LISTA TODOS OS PRODUTOS
 
-    @GetMapping("/listaprodutos/{grupo}")
+    @RequestMapping("/listaprodutos/{grupo}")
     @ResponseBody
     public List<ProdutoModel>listProduto(@PathVariable("grupo")String grupo){
 

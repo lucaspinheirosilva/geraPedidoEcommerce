@@ -38,7 +38,7 @@ public class IndexController {
 
     //INDEX
 
-    @GetMapping("/")
+   @RequestMapping("/")
     public String GetInicial() {
         return "index";
     }

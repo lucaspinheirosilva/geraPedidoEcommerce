@@ -1,7 +1,7 @@
 //BUSCA CODIGO DE BARRAS POR GRUPO
 $("#grupo").change(function () {
 	$.ajax({
-		url: '/listaprodutos/' + $(this).val(),
+		url: '/ws/produto/listaprodutos/' + $(this).val(),
 		dataType: 'json',
 		success: function (response) {
 
