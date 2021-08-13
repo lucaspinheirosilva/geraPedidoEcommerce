@@ -52,7 +52,7 @@ public class PedidoController {
         map.put("grupoSelecionado", listToken);
 
         model.addAllAttributes(map);
-        return "/addPedido";
+        return "addPedido";
     }
 
     @PostMapping("/criarpedido")
