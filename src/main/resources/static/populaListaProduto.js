@@ -20,7 +20,7 @@ $("#grupo").change(function () {
 			}
 			else {
 
-                $("#produtos").append("<tr><th>" + 'ID' + "</th><th>" + 'PRODUTO' + "</td><th>" + 'VALOR' + "</th></tr>");
+                $("#produtos").append("<tr><th>" + 'COD' + "</th><th>" + 'PRODUTO' + "</td><th>" + 'VALOR' + "</th></tr>");
 			response.forEach(element => {
 				var codprod = element.cod_produto
 				var prod = element.nome_produto
