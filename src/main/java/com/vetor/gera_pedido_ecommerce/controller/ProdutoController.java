@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/ws/produto")
+@RequestMapping(value = "/ws/produto")
 public class ProdutoController {
 
     @Autowired
