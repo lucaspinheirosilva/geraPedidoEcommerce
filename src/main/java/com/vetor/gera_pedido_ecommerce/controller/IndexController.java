@@ -13,7 +13,6 @@ public class IndexController {
 
     //INDEX
     @GetMapping
-    @ResponseBody
     public String GetInicial() {
         return "index";
     }

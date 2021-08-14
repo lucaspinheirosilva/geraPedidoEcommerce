@@ -37,7 +37,7 @@ public class PedidoController {
     //CADASTRO DE PEDIDOS
 
     @GetMapping("/add")
-    @CrossOrigin(origins = "http://localhost:8080/add")
+    //@CrossOrigin(origins = "http://localhost:8080/add")
     /*https://www.onlinetutorialspoint.com/spring-boot/how-to-enable-spring-boot-cors-example-crossorigin.html*/
     public String pedidoFormulario(Model model) {
         Map<String, Object> map = new HashMap<>();
