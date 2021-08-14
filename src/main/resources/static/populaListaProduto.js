@@ -22,12 +22,15 @@ $("#grupo").change(function () {
 			}
 			else {
 				$("#erro").empty();
+				retorno ="AGUARDE...."
+				$("#erro").append("<p>" + retorno + "</p>")
 				for (var i = 0; i < tamanho; i++) {
 					var codprod = response[i]['cod_produto'];
 					var prod = response[i]['nome_produto'];
 					var valor = response[i]['vl_venda_vista'];
 					$("#produtos").append("<tr><td>" + codprod + "</td><td>" + prod + "</td><td>" + valor + "</td></tr>");
 				}
+				$("#erro").empty();
 
 			}
 

@@ -43,12 +43,6 @@ public class ProdutoController {
         return produtoService.listarCodigoBarras(grupo);
 
     }
-    @GetMapping("/teste")
-    public String GetInicial() {
-        return "index";
-    }
-
-
     //LISTA TODOS OS PRODUTOS
     @ResponseBody
     @GetMapping("/listaprodutos/{grupo}")
