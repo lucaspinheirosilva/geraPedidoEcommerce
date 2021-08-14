@@ -26,7 +26,9 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     //LISTAR TODOS OS PRODUTOS (POR NOME)
+    @ResponseBody
     @GetMapping("/listAll")
+
     public String listaProduto(Model model) {
 
         List<ProdutoModel> list = new ArrayList<>();
