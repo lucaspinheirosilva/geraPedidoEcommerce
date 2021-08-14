@@ -70,11 +70,11 @@ public class PedidoController {
         if (resp.getCodigo_pedido() == 0) {
             sucess = true;
             ResponseEntity.ok().build();
-            return "redirect:/mensagem";
+            return "redirect:/ws/pedido/mensagem";
             //SUCESSO AO CRIAR PEDIDO
         } else {
             sucess = false;
-            return "redirect:/mensagem";
+            return "redirect:/ws/pedido/mensagem";
         }
     }
 

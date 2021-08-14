@@ -5,28 +5,48 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class TokenRepository {
 
-    private EntityManager em;
+    private final EntityManager em;
+
 
     public TokenRepository(EntityManager em) {
         this.em = em;
     }
-    public List<Token>localizarToken(){
-        String query = "SELECT t FROM token as t WHERE t.isAtivo='S' ";
-        TypedQuery<Token> tq = em.createQuery(query,Token.class);
+    List<Token> listToken = new ArrayList<>();
+    public List<Token> localizarToken() {
+        TypedQuery<Token> tq;
+        try {
+            String query = "SELECT t FROM token as t WHERE t.isAtivo='S' ";
+            tq = em.createQuery(query, Token.class);
 
-        return tq.getResultList();
+            listToken = tq.getResultList();
+        } catch (Exception e) {
+            Token token = new Token();
+            token.setGrupo("ERRO DE CONEXAO, Contate do Admin!!");
+            listToken.add(token);
+        }
+        return listToken;
     }
 
     public List<Token> localizarPorGrupo(String grupo) {
-        String query = "SELECT t FROM token as t WHERE t.grupo = :grupo ";
-        //String query = "SELECT t FROM token as t WHERE t.grupo = 'LUCA-5439'";
-        TypedQuery<Token> tq = em.createQuery(query,Token.class);
-        tq.setParameter("grupo",grupo);
-        return tq.getResultList();
+        TypedQuery<Token> tq;
+        try {
+            String query = "SELECT t FROM token as t WHERE t.grupo = :grupo ";
+            tq = em.createQuery(query, Token.class);
+            tq.setParameter("grupo", grupo);
+
+            listToken=tq.getResultList();
+        }catch (Exception e){
+            Token token = new Token();
+            token.setGrupo("ERRO DE CONEXAO, Contate do Admin!!");
+            listToken.add(token);
+        }
+
+        return listToken;
     }
 }

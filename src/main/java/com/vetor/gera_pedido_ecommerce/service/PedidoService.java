@@ -1,14 +1,11 @@
 package com.vetor.gera_pedido_ecommerce.service;
 import com.vetor.gera_pedido_ecommerce.model.Hash_Map;
 import com.vetor.gera_pedido_ecommerce.model.Resposta;
-import com.vetor.gera_pedido_ecommerce.model.produtos.CodigoBarrasModel;
 import com.vetor.gera_pedido_ecommerce.model.token.Token;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoCliente;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoModel;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoPagamento;
 import com.vetor.gera_pedido_ecommerce.model.pedido.PedidoProduto;
-import com.vetor.gera_pedido_ecommerce.model.produtos.ProdutoModel;
-import com.vetor.gera_pedido_ecommerce.repository.TokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +17,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -38,17 +34,24 @@ public class PedidoService {
                            @Valid PedidoPagamento pedidoPagamento,
                            @Valid Token token) throws URISyntaxException {
 
-        List<Token> listaGrupos = tokenService.listarPorGrupo(token.getGrupo());
+        List<Token> listaGrupos = new ArrayList<>();
+        try {
+            listaGrupos = tokenService.listarPorGrupo(token.getGrupo());
 
-        for (Token listaGrupo : listaGrupos) {
-            System.out.println(listaGrupo);
+            for (Token listaGrupo : listaGrupos) {
+                System.out.println(listaGrupo);
 
-            token.setId(listaGrupo.getId());
-            token.setGrupo(listaGrupo.getGrupo());
-            token.setToken(listaGrupo.getToken());
-            token.setIsAtivo(listaGrupo.getIsAtivo());
-            token.setNome(listaGrupo.getNome());
+                token.setId(listaGrupo.getId());
+                token.setGrupo(listaGrupo.getGrupo());
+                token.setToken(listaGrupo.getToken());
+                token.setIsAtivo(listaGrupo.getIsAtivo());
+                token.setNome(listaGrupo.getNome());
+            }
+        } catch (Exception e) {
+            token.setGrupo("ERRO!!"+e.getMessage());
+            listaGrupos.add(token);
         }
+
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -107,13 +110,12 @@ public class PedidoService {
         Resposta resposta = new Resposta();
 
 
-        String erroTryCatch="";
+        String erroTryCatch = "";
         try {
             resposta = restTemplate.postForObject(uri, entity, Resposta.class);
 
 
-        }catch (Exception e){
-            //erroTryCatch=e.getCause().toString();
+        } catch (Exception e) {
             log.error(e.getMessage());
             erroTryCatch = e.getMessage();
         }
@@ -132,7 +134,6 @@ public class PedidoService {
         return resposta;
 
     }
-
 
 
 }
