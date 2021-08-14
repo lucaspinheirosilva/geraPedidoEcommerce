@@ -36,7 +36,7 @@ public class PedidoController {
 
     //CADASTRO DE PEDIDOS
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @GetMapping("/add")
     @CrossOrigin(origins = "http://localhost:8080/add")
     /*https://www.onlinetutorialspoint.com/spring-boot/how-to-enable-spring-boot-cors-example-crossorigin.html*/
     public String pedidoFormulario(Model model) {
@@ -55,7 +55,7 @@ public class PedidoController {
         return "addPedido";
     }
 
-    @RequestMapping(value = "/criarpedido",method = RequestMethod.POST)
+    @PostMapping("/criarpedido")
     public String criarPedido(ModelMap modelMap,
                               @Valid PedidoModel pedidoModel,
                               @Valid PedidoCliente pedidoCliente,
@@ -79,7 +79,7 @@ public class PedidoController {
     }
 
     //RETORNO DE MENSSAGEM (sucesso ou erro) DO CADASTRO DE PEDIDO
-    @RequestMapping(value = "/mensagem",method = RequestMethod.GET)
+    @GetMapping("/mensagem")
     public String retorno(ModelMap modelMap) {
         String mensagemRetorno;
         String urlImagem;

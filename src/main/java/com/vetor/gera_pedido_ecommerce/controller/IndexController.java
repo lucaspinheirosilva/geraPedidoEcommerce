@@ -11,16 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/")
 public class IndexController {
 
-    @Autowired
-    PedidoService service = new PedidoService();
-    @Autowired
-    TokenService tokenService;
-
-    Boolean sucess;
-    Resposta resp = new Resposta();
-
-
     //INDEX
+    @GetMapping
     public String GetInicial() {
         return "index";
     }
