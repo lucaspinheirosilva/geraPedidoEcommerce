@@ -20,12 +20,15 @@ $("#grupo").change(function () {
 			}
 			else {
 
+                $("#produtos").append("<tr><th>" + 'ID' + "</th><th>" + 'PRODUTO' + "</td><th>" + 'VALOR' + "</th></tr>");
 			response.forEach(element => {
 				var codprod = element.cod_produto
 				var prod = element.nome_produto
 				var valor = element.vl_venda_vista
-				$("#produtos").append("<tr><td>" + codprod + "</td><td>" + prod + "</td><td>" + valor + "</td></tr>");
+				var valorMasked = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+				$("#produtos").append("<tr><td>" + codprod + "</td><td>" + prod + "</td><td>" + valorMasked + "</td></tr>");
 			});
+
 			}
 
 
