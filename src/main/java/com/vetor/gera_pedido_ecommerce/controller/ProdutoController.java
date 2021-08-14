@@ -17,7 +17,6 @@ import java.util.List;
 
 
 @Controller
-
 @RequestMapping("/ws/produto")
 public class ProdutoController {
 
