@@ -41,7 +41,13 @@ public class ProdutoController {
     public List<CodigoBarrasModel> listaCodigoBarras(@PathVariable("grupo") String grupo){
 
         return produtoService.listarCodigoBarras(grupo);
+
     }
+    @GetMapping("/teste")
+    public String GetInicial() {
+        return "index";
+    }
+
 
     //LISTA TODOS OS PRODUTOS
     @ResponseBody
